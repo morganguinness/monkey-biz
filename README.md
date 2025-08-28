@@ -1,18 +1,17 @@
-# Monkey Business — Vite + React + Tailwind
+# Monkey Business — Vite + React + Tailwind (latest)
 
-## Local dev
+## Local dev (optional)
 ```bash
 npm install
 npm run dev
 ```
 
-## Build
+## Build (to create /dist for Netlify drag-and-drop)
 ```bash
 npm run build
 npm run preview
 ```
 
-## Netlify settings
+## Netlify (Git-based)
 - Build command: `npm run build`
 - Publish directory: `dist`
-- (Optional) Add `public/_redirects` with `/* /index.html 200` if you add client-side routes later.

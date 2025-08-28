@@ -16,7 +16,7 @@ const SECTIONS = [
   {
     id: "nfts",
     title: "NFTs",
-    image: "https://monkeyplanner.carrd.co/assets/images/image05.jpg?v=78a110ae",
+    image: "https://monkeyplanner.carrd.co/assets/images/image20.jpg?v=c0a9e424",
     blurb:
       "Coming Soon — Our very own NFT collection. Holders of our NFT become members of the business. The art work alone is outstanding, but the utility is even hotter.",
   },
@@ -59,9 +59,16 @@ const NFT_ITEMS = [
 ];
 
 const GAME_ITEMS = [
-  { title: "Titan Miner", img: "https://monkeyplanner.carrd.co/assets/images/image16.jpg?v=e7d2872f", href: "https://titanminer.netlify.app/" },
+  { title: "Turtz", img: "https://pbs.twimg.com/profile_images/1954715641878814720/VYZhwmdt_400x400.jpg", href: "https://turtz.netlify.app/" },
   { title: "Planet X Invader", img: "https://monkeyplanner.carrd.co/assets/images/image17.jpg?v=e7d2872f", href: "https://planetxinvader.netlify.app/" },
-  { title: "BullBears", img: "https://monkeyplanner.carrd.co/assets/images/image18.jpg?v=e7d2872f", href: "https://bullbears.netlify.app/" },
+  { title: "Decent Ducks", img: "https://pbs.twimg.com/profile_images/1947055552904716288/obGq_WEQ_400x400.jpg", href: "https://decentducks.netlify.app/" },
+];
+
+// Partners are now data-driven for easy edits
+const PARTNER_ITEMS = [
+  { title: "$TURTZ", img: "https://pbs.twimg.com/profile_images/1954715641878814720/VYZhwmdt_400x400.jpg", href: "https://x.com/SeaTurtz" },
+  { title: "PLANET X ALIENS", img: "https://pbs.twimg.com/profile_images/1920581201733054464/Cdp83l6K_400x400.png", href: "https://x.com/PlanetXAliens" },
+  { title: "SOL GODS", img: "https://pbs.twimg.com/profile_images/1926961141948850176/e_chj-33_400x400.jpg", href: "https://x.com/SOLGodNFTs" },
 ];
 
 function Lightbox({ open, onClose, img, title, onPrev, onNext }) {
@@ -127,9 +134,14 @@ function ItemCard({ title, img, href, onClick }) {
 
   return (
     <Wrapper>
-      <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm">
-        <div className="h-40 w-full md:h-48">
+      <div className="group overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+        <div className="relative h-40 w-full md:h-48">
           <img src={img} alt={title} className="h-full w-full object-cover" loading="lazy" decoding="async" />
+          {href && (
+            <span className="pointer-events-none absolute right-2 top-2 rounded-full bg-black/70 px-2 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
+              Play now →
+            </span>
+          )}
         </div>
         <div className="px-3 py-2">
           <div className="text-sm font-semibold text-neutral-900 group-hover:underline">{title}</div>
@@ -264,7 +276,7 @@ export default function MonkeyBusinessLanding() {
         cta={SECTIONS[0].cta}
       />
 
-      {/* NFTs (image right) */}
+      {/* NFTs (image left) */}
       <SectionBlock
         id={SECTIONS[1].id}
         title={SECTIONS[1].title}
@@ -273,7 +285,7 @@ export default function MonkeyBusinessLanding() {
         reverse
       >
         <div className="mt-6 space-y-4">
-          <p className="text-sm text-neutral-600">Browse a few examples from the collection. We'll swap these with your real NFTs and marketplace links.</p>
+          <p className="text-sm text-neutral-700">As seen on NFT Calendar.</p>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
             {NFT_ITEMS.map((it, i) => (
               <ItemCard key={it.title} title={it.title} img={it.img} onClick={() => setLb({ open: true, index: i })} />
@@ -371,18 +383,14 @@ export default function MonkeyBusinessLanding() {
         blurb={SECTIONS[4].blurb}
       >
         <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-          <a href="https://x.com/SeaTurtz" target="_blank" rel="noreferrer" className="overflow-hidden rounded-2xl border border-neutral-200 bg-white">
-            <div className="h-32 w-full">
-              <img src="https://pbs.twimg.com/profile_images/1954715641878814720/VYZhwmdt_400x400.jpg" alt="$TURTZ logo" className="h-full w-full object-cover" loading="lazy" decoding="async" />
-            </div>
-            <div className="px-3 py-2 text-sm font-semibold text-neutral-900">$TURTZ</div>
-          </a>
-          <a href="https://x.com/PlanetXAliens" target="_blank" rel="noreferrer" className="overflow-hidden rounded-2xl border border-neutral-200 bg-white">
-            <div className="h-32 w-full">
-              <img src="https://pbs.twimg.com/profile_images/1920581201733054464/Cdp83l6K_400x400.png" alt="PLANET X ALIENS logo" className="h-full w-full object-cover" loading="lazy" decoding="async" />
-            </div>
-            <div className="px-3 py-2 text-sm font-semibold text-neutral-900">PLANET X ALIENS</div>
-          </a>
+          {PARTNER_ITEMS.map((p) => (
+            <a key={p.title} href={p.href} target="_blank" rel="noreferrer" className="overflow-hidden rounded-2xl border border-neutral-200 bg-white">
+              <div className="h-32 w-full">
+                <img src={p.img} alt={`${p.title} logo`} className="h-full w-full object-cover" loading="lazy" decoding="async" />
+              </div>
+              <div className="px-3 py-2 text-sm font-semibold text-neutral-900">{p.title}</div>
+            </a>
+          ))}
         </div>
         <p className="mt-4 text-sm text-neutral-600">More to follow...</p>
       </SectionBlock>
