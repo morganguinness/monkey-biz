@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowRight, Gamepad2, Images, Twitter, Users, Calendar, Settings, X as CloseIcon, ChevronLeft, ChevronRight, Send } from "lucide-react";
 
-const LOGO_SRC = "https://monkeyplanner.carrd.co/assets/images/image19.jpg?v=b414956b"; // external logo URL provided by user
+const LOGO_SRC = "https://monkeyplanner.carrd.co/assets/images/image19.jpg?v=b414956b"; // external logo URL
 
 const SECTIONS = [
   {
@@ -16,7 +16,7 @@ const SECTIONS = [
   {
     id: "nfts",
     title: "NFTs",
-    image: "https://monkeyplanner.carrd.co/assets/images/image20.jpg?v=c0a9e424",
+    image: "https://monkeyplanner.carrd.co/assets/images/image05.jpg?v=78a110ae", // original monkey art restored
     blurb:
       "Coming Soon — Our very own NFT collection. Holders of our NFT become members of the business. The art work alone is outstanding, but the utility is even hotter.",
   },
@@ -27,7 +27,7 @@ const SECTIONS = [
     blurb:
       "Play-4-Fun. Play-2-Win. Whichever suits your project best. All games are made to represent your project, engage the community and onboard newbies.",
   },
-    {
+  {
     id: "creative-studio",
     title: "Creative Studio",
     image: "https://monkeyplanner.carrd.co/assets/images/image03.jpg?v=78a110ae",
@@ -37,11 +37,10 @@ const SECTIONS = [
   {
     id: "partners",
     title: "Partners",
-    image: "https://monkeyplanner.carrd.co/assets/images/image02.jpg?v=78a110ae",
+    image: "https://monkeyplanner.carrd.co/assets/images/image02.jpg?v=78a110ae", // handshake restored
     blurb:
       "Our jungle grows with strong collaborations. Already we have partnered up with the following projects.",
   },
-
   {
     id: "spaces",
     title: "Spaces",
@@ -51,24 +50,26 @@ const SECTIONS = [
   }
 ];
 
-// Example content lists (swap these with your real items)
+// NFTs (lightbox items)
 const NFT_ITEMS = [
   { title: "Monkey Biz #1", img: "https://monkeyplanner.carrd.co/assets/images/image14.jpg?v=b8d8129a" },
   { title: "Monkey Biz #2", img: "https://monkeyplanner.carrd.co/assets/images/image13.jpg?v=b8d8129a" },
   { title: "Monkey Biz #3", img: "https://monkeyplanner.carrd.co/assets/images/image15.jpg?v=b8d8129a" },
 ];
 
+// Games
 const GAME_ITEMS = [
   { title: "Turtz", img: "https://pbs.twimg.com/profile_images/1954715641878814720/VYZhwmdt_400x400.jpg", href: "https://turtz.netlify.app/" },
   { title: "Planet X Invader", img: "https://monkeyplanner.carrd.co/assets/images/image17.jpg?v=e7d2872f", href: "https://planetxinvader.netlify.app/" },
   { title: "Decent Ducks", img: "https://pbs.twimg.com/profile_images/1947055552904716288/obGq_WEQ_400x400.jpg", href: "https://decentducks.netlify.app/" },
 ];
 
-// Partners are now data-driven for easy edits
+// Partners (data-driven grid)
 const PARTNER_ITEMS = [
-  { title: "$TURTZ", img: "https://pbs.twimg.com/profile_images/1954715641878814720/VYZhwmdt_400x400.jpg", href: "https://x.com/SeaTurtz" },
+  { title: "Launch My NFT", img: "https://pbs.twimg.com/profile_images/1592614814764916738/ZT5r2Qlk_400x400.jpg", href: "https://launchmynft.io/" },
   { title: "PLANET X ALIENS", img: "https://pbs.twimg.com/profile_images/1920581201733054464/Cdp83l6K_400x400.png", href: "https://x.com/PlanetXAliens" },
   { title: "SOL GODS", img: "https://pbs.twimg.com/profile_images/1926961141948850176/e_chj-33_400x400.jpg", href: "https://x.com/SOLGodNFTs" },
+  { title: "NFT Calendar", img: "https://monkeyplanner.carrd.co/assets/images/image20.jpg?v=c0a9e424", href: "https://nftcalendar.io/event/monkey-business-2/" },
 ];
 
 function Lightbox({ open, onClose, img, title, onPrev, onNext }) {
@@ -204,17 +205,14 @@ function SectionHero({ id, image, eyebrow, title, blurb, cta }) {
   );
 }
 
+// Alternating section block (reverse flips sides)
 function SectionBlock({ id, image, title, blurb, reverse = false, children }) {
   return (
     <section id={id} className="relative isolate bg-yellow-50 scroll-mt-28">
-      <div
-        className={`relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 py-16 md:grid-cols-2 md:px-10 md:py-24`}
-      >
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 py-16 md:grid-cols-2 md:px-10 md:py-24">
         <div className={reverse ? "md:order-2" : "md:order-1"}>
           <h2 className="text-3xl font-bold md:text-4xl">{title}</h2>
-          {blurb && (
-            <p className="mt-4 max-w-prose text-base/relaxed text-neutral-600">{blurb}</p>
-          )}
+          {blurb && <p className="mt-4 max-w-prose text-base/relaxed text-neutral-600">{blurb}</p>}
           {children}
         </div>
         <div className={reverse ? "md:order-1" : "md:order-2"}>
@@ -250,7 +248,9 @@ function Nav() {
           ))}
         </nav>
         <a
-          href="https://x.com/monkeybizio" target="_blank" rel="noopener noreferrer"
+          href="https://x.com/monkeybizio"
+          target="_blank"
+          rel="noopener noreferrer"
           className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-3 py-2 text-xs font-semibold backdrop-blur hover:bg-white/20 md:text-sm"
         >
           Follow <ArrowRight className="h-4 w-4" />
@@ -294,7 +294,7 @@ export default function MonkeyBusinessLanding() {
         </div>
       </SectionBlock>
 
-      {/* Games (image left) */}
+      {/* Games (image right by default) */}
       <SectionBlock
         id={SECTIONS[2].id}
         title={SECTIONS[2].title}
@@ -311,7 +311,7 @@ export default function MonkeyBusinessLanding() {
         </div>
       </SectionBlock>
 
-      {/* Creative Studio (image right) */}
+      {/* Creative Studio (image left) */}
       <SectionBlock
         id={SECTIONS[3].id}
         title={SECTIONS[3].title}
@@ -360,7 +360,7 @@ export default function MonkeyBusinessLanding() {
               </div>
               <h3 className="text-lg font-semibold">Games</h3>
             </div>
-            <p className="mt-3 text-sm text-neutral-600">We develop fun retro‑style arcade games to attract new members and keep the current community engaged.</p>
+            <p className="mt-3 text-sm text-neutral-600">We develop fun retro-style arcade games to attract new members and keep the current community engaged.</p>
             <div className="mt-4 h-1 w-12 rounded-full bg-amber-200 transition-all group-hover:w-16"></div>
           </div>
         </div>
@@ -375,7 +375,7 @@ export default function MonkeyBusinessLanding() {
         </div>
       </SectionBlock>
 
-      {/* Partners (image left) */}
+      {/* Partners (image right) */}
       <SectionBlock
         id={SECTIONS[4].id}
         title={SECTIONS[4].title}
@@ -395,7 +395,7 @@ export default function MonkeyBusinessLanding() {
         <p className="mt-4 text-sm text-neutral-600">More to follow...</p>
       </SectionBlock>
 
-      {/* Spaces (image right) */}
+      {/* Spaces (image left) */}
       <SectionBlock
         id={SECTIONS[5].id}
         title={SECTIONS[5].title}
@@ -411,21 +411,24 @@ export default function MonkeyBusinessLanding() {
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <a
             href="https://x.com/monkeybizio"
-            target="_blank" rel="noopener noreferrer"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold shadow-sm hover:bg-neutral-50"
           >
             <Twitter className="h-4 w-4" /> X / Twitter
           </a>
           <a
             href="https://discord.com/invite/yarVDEMNjm"
-            target="_blank" rel="noopener noreferrer"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold shadow-sm hover:bg-neutral-50"
           >
             <Users className="h-4 w-4" /> Discord
           </a>
           <a
             href="https://t.me/monkeybizio"
-            target="_blank" rel="noopener noreferrer"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold shadow-sm hover:bg-neutral-50"
           >
             <Send className="h-4 w-4" /> Telegram
