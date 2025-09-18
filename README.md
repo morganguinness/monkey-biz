@@ -6,8 +6,13 @@ npm install
 npm start
 ```
 
-## Build for Netlify
+## Deploy via Netlify (GitHub)
 - Build command: `npm run build`
 - Publish directory: `build/`
+- Node version: 18 (set in `.nvmrc` or Netlify env)
 
-If you're connecting from Git, Netlify will auto-detect these. If you prefer manual deploy, run the build and drag the `build/` folder into Netlify's **Deploys** tab.
+## Manual deploy
+```bash
+npm run build
+# drag the build/ folder to Netlify Deploys
+```
