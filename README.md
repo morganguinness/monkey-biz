@@ -1,12 +1,13 @@
-# Monkey Business — Vite + React + Tailwind (latest)
+# Monkey Business — Netlify Ready (CRA + Tailwind)
 
-## Local dev (optional)
+## Run locally
+```bash
 npm install
-npm run dev
+npm start
+```
 
-## Build (for Netlify drag-and-drop)
-npm run build   # creates /dist
+## Build for Netlify
+- Build command: `npm run build`
+- Publish directory: `build/`
 
-## Netlify (Git-based)
-- Build command: npm run build
-- Publish directory: dist
+If you're connecting from Git, Netlify will auto-detect these. If you prefer manual deploy, run the build and drag the `build/` folder into Netlify's **Deploys** tab.
