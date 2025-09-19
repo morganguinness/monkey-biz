@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-\
-import React, { useState, useEffect } from "react";
+
 
 function ToolCard({ icon, title, copy, items }) {
   const [expanded, setExpanded] = useState(false);
