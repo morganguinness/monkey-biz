@@ -1,76 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-
-function ToolCard({ icon, title, copy, items }) {
-  const [expanded, setExpanded] = useState(false);
-  const visibleItems = expanded ? items : items.slice(0, 3);
-
-  return (
-    <div className="rounded-2xl border border-neutral-800 bg-neutral-900/40 p-5">
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <span className="text-2xl" aria-hidden>{icon}</span>
-          <h3 className="text-xl font-semibold">{title}</h3>
-        </div>
-        {items.length > 3 && (
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className="text-sm text-yellow-300 hover:underline"
-            aria-label={expanded ? `Collapse ${title}` : `Expand ${title}`}
-          >
-            {expanded ? "▲" : "▼"}
-          </button>
-        )}
-      </div>
-      <p className="mt-2 text-neutral-300 text-sm">{copy}</p>
-      <ul className="mt-4 space-y-2">
-        {visibleItems.map((it, i) => (
-          <li key={i} className="flex items-center justify-between gap-2">
-            <a href={it.href} className="hover:text-yellow-300 underline underline-offset-4" target="_blank" rel="noopener noreferrer">{it.name}</a>
-            <span className="text-xs text-neutral-400 px-2 py-1 rounded-full border border-neutral-700">{it.badge}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function PickCard({ image, title, copy, cta, href, extraLink }) {
-  return (
-    <div className="relative rounded-2xl border border-neutral-800 bg-neutral-900/40 p-5 flex flex-col">
-      {image && (
-        <div className="flex items-center justify-between">
-          <img src={image} alt={title} className="w-12 h-12 rounded-full mb-3" />
-          {extraLink && (
-            <a
-              href={extraLink.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-neutral-400 hover:text-yellow-300 text-xl"
-              title="View on X"
-            >
-              𝕏
-            </a>
-          )}
-        </div>
-      )}
-      <h3 className="text-xl font-semibold">{title}</h3>
-      <p className="mt-2 text-neutral-300 text-sm flex-1 whitespace-pre-line">{copy}</p>
-      <div className="mt-4 flex justify-center">
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-yellow-300 text-neutral-900 font-semibold"
-        >
-          {cta}
-        </a>
-      </div>
-    </div>
-  );
-}
-
-function MonkeyBizLanding() {
+export default function MonkeyBizLanding() {
   const [showOverlay, setShowOverlay] = useState(false);
   const [showVocab, setShowVocab] = useState(false);
 
@@ -139,7 +69,7 @@ function MonkeyBizLanding() {
           </a>
           <nav className="hidden md:flex items-center gap-6 text-sm">
             <a href="#starter-kit" className="hover:text-yellow-300">Starter Kit</a>
-            <a href="#picks" className="hover:text-yellow-300">Top Picks</a>
+            <a href="#picks" className="hover:text-yellow-300">Must Haves</a>
             <a href="#guides" className="hover:text-yellow-300">Guides</a>
             <a href="#community" className="hover:text-yellow-300">Community</a>
           </nav>
@@ -217,6 +147,7 @@ function MonkeyBizLanding() {
                 { name: "Bybit", href: "https://www.bybit.com/", badge: "CEX" },
                 { name: "OKX", href: "https://www.okx.com/", badge: "CEX" },
                 { name: "Uniswap", href: "https://app.uniswap.org/", badge: "DEX" },
+                { name: "TapTrade", href: "https://taptrade.io/?affiliate=GZVAAisq1D", badge: "Trading" },
               ]}
             />
             <ToolCard
@@ -256,8 +187,9 @@ function MonkeyBizLanding() {
               title="Utilities"
               copy="Extra tools, VPNs, productivity, and safety."
               items={[
-                { name: "SolRip", href: "https://solrip.io/r/JUmCPLrl", badge: "Wallet Burner" },
-                { name: "NordVPN", href: "https://nordvpn.com/", badge: "VPN" },
+                { name: "GoMining", href: "https://gomining.com/?ref=YQTPJ0D", badge: "Mining" },
+                { name: "NordVPN", href: "https://go.nordvpn.net/aff_c?offer_id=15&aff_id=132230&url_id=902", badge: "VPN" },
+                { name: "NordPass", href: "https://go.nordpass.io/aff_c?offer_id=488&aff_id=132230&url_id=9356", badge: "Password" },
                 { name: "FlxTime", href: "http://www.flxtime.fun", badge: "Mining" },
                 { name: "Notion", href: "https://www.notion.so/", badge: "Productivity" },
               ]}
@@ -266,29 +198,94 @@ function MonkeyBizLanding() {
         </div>
       </section>
 
-      {/* Top Picks */}
+      {/* Must Haves (Top Picks) */}
       <section id="picks" className="border-t border-neutral-800">
         <div className="max-w-6xl mx-auto px-4 py-16">
-          <h2 className="text-3xl md:text-4xl font-bold">🏆 Monkey’s Top Picks</h2>
+          <h2 className="text-3xl md:text-4xl font-bold">🔥 Monkey’s Must Haves</h2>
           <p className="mt-2 text-neutral-300 max-w-2xl">
-            Our featured partners, projects, and communities.
+            Essential affiliate partners—curated for performance, safety, and ease of use.
           </p>
           <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-            <PickCard image="https://pbs.twimg.com/profile_images/1851223281413607424/mOqQuuhh_400x400.jpg" title="Featured Casino: Bro Bets" copy="Slots, Roulette, Sportsbook, Predictions and many more games | Deposit in $SOL $BTC $ETH" cta="Play Now" href="https://brobets.io/?ref=MBusinesss" extraLink={{ href: "https://x.com/BroBetsIo" }} />
-            <PickCard image="https://pbs.twimg.com/profile_images/1926961141948850176/e_chj-33_400x400.jpg" title="Featured NFT Project: Sol Gods" copy="In the dying age of Solara, when the last solar convergence scorched the skies, 3,333 humans were chosen. Join the discord for Utility!" cta="Explore" href="https://magiceden.io/marketplace/solgods_" extraLink={{ href: "https://x.com/SOLGodNFTs" }} />
-            <PickCard image="https://pbs.twimg.com/profile_images/1939095712047800320/-6a-FPqY_400x400.jpg" title="Featured Community: Vyral" copy="The home of builders where creators and founders brands become personal IPs." cta="Join Now" href="https://x.com/i/communities/1938218279698375115" extraLink={{ href: "https://x.com/vyralxyz" }} />
-            <PickCard image="https://pbs.twimg.com/profile_images/1804862024381255680/_r2LLk68_400x400.jpg" title="Featured Utility (SolRip)" copy="- Clean your Wallets and Reclaim Solana in the process!\n- Earn 20% Lifetime Commission on every burn made with your link!\n- Resize your NFTs for FREE!" cta="Visit Now" href="https://solrip.io/r/JUmCPLrl" extraLink={{ href: "https://x.com/SolRip_io" }} />
+            <PickCard
+              image="https://pbs.twimg.com/profile_images/1874931488254197760/nO9WZ7C7_400x400.jpg"
+              title="Featured Mining: GoMining"
+              copy="Go mining right from your phone and harness the power of verified data centers. It’s mining made easy, anytime, anywhere!"
+              cta="Start Mining"
+              href="https://gomining.com/?ref=YQTPJ0D"
+              extraLink={{ href: "https://x.com/GoMining_token" }}
+            />
+            <PickCard
+              image="https://pbs.twimg.com/profile_images/1851223281413607424/mOqQuuhh_400x400.jpg"
+              title="Featured Casino: Bro Bets"
+              copy="Slots, Roulette, Sportsbook, Predictions & more. Deposit in $SOL, $BTC, $ETH."
+              cta="Play Now"
+              href="https://brobets.io/?ref=MBusinesss"
+              extraLink={{ href: "https://x.com/BroBetsIo" }}
+            />
+            <PickCard
+              image="https://taptrade.io/images/TAP-logo-large.png"
+              title="Featured Trading: TapTrade"
+              copy="The Premium AI Trading Suite. Signals on Crypto, Stocks, Forex, and Memecoins."
+              cta="Trade Now"
+              href="https://taptrade.io/?affiliate=GZVAAisq1D"
+              extraLink={{ href: "https://x.com/TAPfintech" }}
+            />
+            <PickCard
+              image="https://pbs.twimg.com/profile_images/1618629073969750018/_J6Qi3VW_400x400.jpg"
+              title="Featured Security: NordVPN"
+              copy="Experience the internet without anyone looking over your shoulder. Work, stream, and play safely with the world’s leading VPN."
+              cta="Get VPN"
+              href="https://go.nordvpn.net/aff_c?offer_id=15&aff_id=132230&url_id=902"
+              extraLink={{ href: "https://x.com/NordVPN" }}
+            />
           </div>
         </div>
       </section>
 
-      {/* Guides */}
+      {/* Guides (privacy‑enhanced embeds, no playlist overlay) */}
       <section id="guides" className="border-t border-neutral-800">
         <div className="max-w-6xl mx-auto px-4 py-16">
           <h2 className="text-3xl md:text-4xl font-bold">📺 Guides</h2>
           <p className="mt-2 text-neutral-300 max-w-2xl">
             Watch quick tutorials and how-tos to sharpen your Web3 skills.
           </p>
+
+          {/* Embedded videos */}
+          <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="aspect-video">
+              <iframe
+                className="w-full h-full rounded-xl"
+                src="https://www.youtube-nocookie.com/embed/GmRbLcmX4A4?rel=0"
+                title="Intro to Web3 & Wallets"
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+            <div className="aspect-video">
+              <iframe
+                className="w-full h-full rounded-xl"
+                src="https://www.youtube-nocookie.com/embed/upIfGA0R30o?rel=0"
+                title="DeFi Basics in 10 Minutes"
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+            <div className="aspect-video">
+              <iframe
+                className="w-full h-full rounded-xl"
+                src="https://www.youtube-nocookie.com/embed/x1ORD2BNuDg?rel=0"
+                title="NFT Marketplaces Explained"
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -300,8 +297,8 @@ function MonkeyBizLanding() {
             Connect with fellow degens, builders, and traders. Share alpha and grow together.
           </p>
           <div className="mt-8 flex justify-center gap-5">
-            <a href="https://x.com/monkeybizio" target="_blank" rel="noopener noreferrer" className="px-5 py-3 rounded-xl bg-neutral-900 border border-neutral-700 hover:border-yellow-300">🐦 Follow us on X</a>
-            <a href="https://discord.gg/yarVDEMNjm" target="_blank" rel="noopener noreferrer" className="px-5 py-3 rounded-xl bg-neutral-900 border border-neutral-700 hover:border-yellow-300">💬 Join Discord</a>
+            <a href="https://x.com/monkeybizio" className="px-5 py-3 rounded-xl bg-neutral-900 border border-neutral-700 hover:border-yellow-300">𝕏 Follow us on X</a>
+            <a href="https://discord.gg/yarVDEMNjm" className="px-5 py-3 rounded-xl bg-neutral-900 border border-neutral-700 hover:border-yellow-300">💬 Join Discord</a>
           </div>
         </div>
       </section>
@@ -309,4 +306,76 @@ function MonkeyBizLanding() {
   );
 }
 
-export default MonkeyBizLanding;
+function ToolCard({ icon, title, copy, items }) {
+  const [expanded, setExpanded] = useState(false);
+  const visibleItems = expanded ? items : items.slice(0, 3);
+
+  return (
+    <div className="rounded-2xl border border-neutral-800 bg-neutral-900/40 p-5">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <span className="text-2xl" aria-hidden>{icon}</span>
+          <h3 className="text-xl font-semibold">{title}</h3>
+        </div>
+        {items.length > 3 && (
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="text-sm text-yellow-300 hover:underline"
+            aria-label={expanded ? `Collapse ${title}` : `Expand ${title}`}
+          >
+            {expanded ? "▲" : "▼"}
+          </button>
+        )}
+      </div>
+      <p className="mt-2 text-neutral-300 text-sm">{copy}</p>
+      <ul className="mt-4 space-y-2">
+        {visibleItems.map((it, i) => (
+          <li key={i} className="flex items-center justify-between gap-2">
+            <a href={it.href} className="hover:text-yellow-300 underline underline-offset-4" target="_blank" rel="noopener noreferrer">{it.name}</a>
+            <span className="text-xs text-neutral-400 px-2 py-1 rounded-full border border-neutral-700">{it.badge}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function PickCard({ image, title, copy, cta, href, extraLink, badge }) {
+  return (
+    <div className="relative rounded-2xl border border-neutral-800 bg-neutral-900/40 p-5 flex flex-col">
+      {badge && (
+        <span className="absolute top-3 left-3 text-[11px] uppercase tracking-wide bg-yellow-300/90 text-neutral-900 border border-yellow-400 rounded-full px-2 py-0.5 shadow">
+          {badge}
+        </span>
+      )}
+      {image && (
+        <div className="flex items-center justify-between">
+          <img src={image} alt={title} className="w-12 h-12 rounded-full mb-3" />
+          {extraLink && (
+            <a
+              href={extraLink.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-neutral-400 hover:text-yellow-300 text-xl"
+              title="View on X"
+            >
+              𝕏
+            </a>
+          )}
+        </div>
+      )}
+      <h3 className="text-xl font-semibold">{title}</h3>
+      <p className="mt-2 text-neutral-300 text-sm flex-1 whitespace-pre-line">{copy}</p>
+      <div className="mt-4 flex justify-center">
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-yellow-300 text-neutral-900 font-semibold"
+        >
+          {cta}
+        </a>
+      </div>
+    </div>
+  );
+}
