@@ -3,13 +3,15 @@ import React, { useState, useEffect } from "react";
 export default function MonkeyBizLanding() {
   const [showOverlay, setShowOverlay] = useState(false);
   const [showVocab, setShowVocab] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  // ESC key to close overlays
+  // ESC key to close overlays and mobile menu
   useEffect(() => {
     const handleKey = (e) => {
       if (e.key === "Escape") {
         setShowOverlay(false);
         setShowVocab(false);
+        setMobileOpen(false);
       }
     };
     window.addEventListener("keydown", handleKey);
@@ -68,27 +70,45 @@ export default function MonkeyBizLanding() {
             <span className="font-bold text-lg tracking-tight">Monkey Business</span>
           </a>
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#starter-kit" className="hover:text-yellow-300">Starter Kit</a>
             <a href="#picks" className="hover:text-yellow-300">Must Haves</a>
+            <a href="#starter-kit" className="hover:text-yellow-300">Starter Kit</a>
             <a href="#guides" className="hover:text-yellow-300">Guides</a>
             <a href="#community" className="hover:text-yellow-300">Community</a>
           </nav>
           <button
-            onClick={() => setShowOverlay(true)}
-            className="md:hidden inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-yellow-300 text-neutral-900 font-semibold"
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-nav"
+            className="md:hidden inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-neutral-700 bg-neutral-900 text-neutral-100"
           >
-            Start Here
+            ☰ Menu
           </button>
         </div>
       </header>
 
+      {/* Mobile Nav */}
+      {mobileOpen && (
+        <div id="mobile-nav" className="md:hidden border-b border-neutral-800 bg-neutral-950/95 backdrop-blur px-4 py-3">
+          <div className="flex flex-col gap-3">
+            <a href="#picks" onClick={() => setMobileOpen(false)} className="py-2 border border-neutral-800 rounded-lg text-center hover:border-yellow-300">Must Haves</a>
+            <a href="#starter-kit" onClick={() => setMobileOpen(false)} className="py-2 border border-neutral-800 rounded-lg text-center hover:border-yellow-300">Starter Kit</a>
+            <a href="#guides" onClick={() => setMobileOpen(false)} className="py-2 border border-neutral-800 rounded-lg text-center hover:border-yellow-300">Guides</a>
+            <a href="#community" onClick={() => setMobileOpen(false)} className="py-2 border border-neutral-800 rounded-lg text-center hover:border-yellow-300">Community</a>
+            <div className="flex gap-3 pt-1">
+              <button onClick={() => { setShowOverlay(true); setMobileOpen(false); }} className="flex-1 px-4 py-2 rounded-xl bg-yellow-300 text-neutral-900 font-semibold">Start Here</button>
+              <button onClick={() => { setShowVocab(true); setMobileOpen(false); }} className="flex-1 px-4 py-2 rounded-xl border border-neutral-700">Key Vocab</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hero */}
       <section
         id="home"
-        className="relative overflow-hidden bg-cover bg-center min-h-screen"
-        style={{ backgroundImage: "url('https://monkeyplanner.carrd.co/assets/images/image04.jpg?v=66515d9d')" }}
+        className="relative overflow-hidden bg-cover bg-center min-h-[90svh] md:min-h-screen"
+        style={{ backgroundImage: "url('https://monkeyplanner.carrd.co/assets/images/image04.jpg?v=66515d9d')", backgroundPosition: "center 30%" }}
       >
-        <div className="bg-neutral-950/70 flex items-end justify-center text-center min-h-screen">
+        <div className="bg-neutral-950/70 flex items-end justify-center text-center min-h-[90svh] md:min-h-screen">
           <div className="max-w-3xl px-4 pb-28">
             <p className="text-neutral-200 text-lg md:text-xl">
               Everything you need to trade, play and navigate Web3.
@@ -110,6 +130,50 @@ export default function MonkeyBizLanding() {
             <p className="mt-6 text-sm text-neutral-200">
               Degen-tested, beginner-friendly. Always DYOR. Not financial advice.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Must Haves (Top Picks) */}
+      <section id="picks" className="border-t border-neutral-800">
+        <div className="max-w-6xl mx-auto px-4 py-16">
+          <h2 className="text-3xl md:text-4xl font-bold">🔥 Monkey’s Must Haves</h2>
+          <p className="mt-2 text-neutral-300 max-w-2xl">
+            Essential affiliate partners—curated for performance, safety, and ease of use.
+          </p>
+          <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+            <PickCard
+              image="https://pbs.twimg.com/profile_images/1874931488254197760/nO9WZ7C7_400x400.jpg"
+              title="Featured Mining: GoMining"
+              copy="Go mining right from your phone and harness the power of verified data centers. It’s mining made easy, anytime, anywhere!"
+              cta="Start Mining"
+              href="https://gomining.com/?ref=YQTPJ0D"
+              extraLink={{ href: "https://x.com/GoMining_token" }}
+            />
+            <PickCard
+              image="https://pbs.twimg.com/profile_images/1851223281413607424/mOqQuuhh_400x400.jpg"
+              title="Featured Casino: Bro Bets"
+              copy="Slots, Roulette, Sportsbook, Predictions & more. Deposit in $SOL, $BTC, $ETH."
+              cta="Play Now"
+              href="https://brobets.io/?ref=MBusinesss"
+              extraLink={{ href: "https://x.com/BroBetsIo" }}
+            />
+            <PickCard
+              image="https://taptrade.io/images/TAP-logo-large.png"
+              title="Featured Trading: TapTrade"
+              copy="The Premium AI Trading Suite. Signals on Crypto, Stocks, Forex, and Memecoins."
+              cta="Trade Now"
+              href="https://taptrade.io/?affiliate=GZVAAisq1D"
+              extraLink={{ href: "https://x.com/TAPfintech" }}
+            />
+            <PickCard
+              image="https://pbs.twimg.com/profile_images/1618629073969750018/_J6Qi3VW_400x400.jpg"
+              title="Featured Security: NordVPN"
+              copy="Experience the internet without anyone looking over your shoulder. Work, stream, and play safely with the world’s leading VPN."
+              cta="Get VPN"
+              href="https://go.nordvpn.net/aff_c?offer_id=15&aff_id=132230&url_id=902"
+              extraLink={{ href: "https://x.com/NordVPN" }}
+            />
           </div>
         </div>
       </section>
@@ -198,50 +262,6 @@ export default function MonkeyBizLanding() {
         </div>
       </section>
 
-      {/* Must Haves (Top Picks) */}
-      <section id="picks" className="border-t border-neutral-800">
-        <div className="max-w-6xl mx-auto px-4 py-16">
-          <h2 className="text-3xl md:text-4xl font-bold">🔥 Monkey’s Must Haves</h2>
-          <p className="mt-2 text-neutral-300 max-w-2xl">
-            Essential affiliate partners—curated for performance, safety, and ease of use.
-          </p>
-          <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-            <PickCard
-              image="https://pbs.twimg.com/profile_images/1874931488254197760/nO9WZ7C7_400x400.jpg"
-              title="Featured Mining: GoMining"
-              copy="Go mining right from your phone and harness the power of verified data centers. It’s mining made easy, anytime, anywhere!"
-              cta="Start Mining"
-              href="https://gomining.com/?ref=YQTPJ0D"
-              extraLink={{ href: "https://x.com/GoMining_token" }}
-            />
-            <PickCard
-              image="https://pbs.twimg.com/profile_images/1851223281413607424/mOqQuuhh_400x400.jpg"
-              title="Featured Casino: Bro Bets"
-              copy="Slots, Roulette, Sportsbook, Predictions & more. Deposit in $SOL, $BTC, $ETH."
-              cta="Play Now"
-              href="https://brobets.io/?ref=MBusinesss"
-              extraLink={{ href: "https://x.com/BroBetsIo" }}
-            />
-            <PickCard
-              image="https://taptrade.io/images/TAP-logo-large.png"
-              title="Featured Trading: TapTrade"
-              copy="The Premium AI Trading Suite. Signals on Crypto, Stocks, Forex, and Memecoins."
-              cta="Trade Now"
-              href="https://taptrade.io/?affiliate=GZVAAisq1D"
-              extraLink={{ href: "https://x.com/TAPfintech" }}
-            />
-            <PickCard
-              image="https://pbs.twimg.com/profile_images/1618629073969750018/_J6Qi3VW_400x400.jpg"
-              title="Featured Security: NordVPN"
-              copy="Experience the internet without anyone looking over your shoulder. Work, stream, and play safely with the world’s leading VPN."
-              cta="Get VPN"
-              href="https://go.nordvpn.net/aff_c?offer_id=15&aff_id=132230&url_id=902"
-              extraLink={{ href: "https://x.com/NordVPN" }}
-            />
-          </div>
-        </div>
-      </section>
-
       {/* Guides (privacy‑enhanced embeds, no playlist overlay) */}
       <section id="guides" className="border-t border-neutral-800">
         <div className="max-w-6xl mx-auto px-4 py-16">
@@ -297,8 +317,8 @@ export default function MonkeyBizLanding() {
             Connect with fellow degens, builders, and traders. Share alpha and grow together.
           </p>
           <div className="mt-8 flex justify-center gap-5">
-            <a href="https://x.com/monkeybizio" className="px-5 py-3 rounded-xl bg-neutral-900 border border-neutral-700 hover:border-yellow-300">𝕏 Follow us on X</a>
-            <a href="https://discord.gg/yarVDEMNjm" className="px-5 py-3 rounded-xl bg-neutral-900 border border-neutral-700 hover:border-yellow-300">💬 Join Discord</a>
+            <a href="https://x.com/monkeybizio" target="_blank" rel="noopener noreferrer" className="px-5 py-3 rounded-xl bg-neutral-900 border border-neutral-700 hover:border-yellow-300">𝕏 Follow us on X</a>
+            <a href="https://discord.gg/yarVDEMNjm" target="_blank" rel="noopener noreferrer" className="px-5 py-3 rounded-xl bg-neutral-900 border border-neutral-700 hover:border-yellow-300">💬 Join Discord</a>
           </div>
         </div>
       </section>
