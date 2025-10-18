@@ -1,4 +1,5 @@
-npm install framer-motion{
+npm install framer-motion
+{
   "name": "monkeybiz",
   "version": "1.0.0",
   "private": true,
