@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useRef } from "react";
 import { motion } from "framer-motion";
 
 // === LINKS (edit these) ===
@@ -141,17 +141,58 @@ function BottomCarousel({ images, fixed = false }) {
 }
 
 export default function LandingPage() {
+  const videoRef = useRef(null);
   const { days, hours, minutes, seconds, isLive } = useCountdown(TARGET_ISO);
+
+  // Ensure autoplay on mobile (iOS/Android): muted + inline + programmatic play
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = true; // extra safety for iOS
+    v.defaultMuted = true;
+    v.playsInline = true;
+
+    const tryPlay = () => {
+      const p = v.play?.();
+      if (p && typeof p.then === "function") {
+        p.catch(() => {
+          // Some browsers require a user gesture; we'll retry on first interaction
+        });
+      }
+    };
+
+    tryPlay();
+
+    const onFirstInteract = () => {
+      tryPlay();
+      window.removeEventListener("touchstart", onFirstInteract);
+      window.removeEventListener("click", onFirstInteract);
+    };
+    window.addEventListener("touchstart", onFirstInteract, { once: true });
+    window.addEventListener("click", onFirstInteract, { once: true });
+
+    return () => {
+      window.removeEventListener("touchstart", onFirstInteract);
+      window.removeEventListener("click", onFirstInteract);
+    };
+  }, []);
 
   return (
     <div className="relative min-h-screen w-full text-white overflow-hidden">
       {/* Background Video */}
       <video
+        ref={videoRef}
         autoPlay
         loop
         muted
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
+        preload="auto"
+        poster="https://i.ibb.co/bYLHPRb/itscoming.jpg"
+        // @ts-ignore Safari inline attribute
+        webkit-playsinline="true"
+        disablePictureInPicture
+        controls={false}
       >
         <source src="/82A5BB2C-A83C-4033-BEA1-3598CE532B8E.mp4" type="video/mp4" />
       </video>
@@ -296,3 +337,4 @@ export default function LandingPage() {
     </div>
   );
 }
+
