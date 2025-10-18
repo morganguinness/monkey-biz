@@ -144,14 +144,19 @@ export default function LandingPage() {
   const { days, hours, minutes, seconds, isLive } = useCountdown(TARGET_ISO);
 
   return (
-    <div
-      className="relative min-h-screen w-full text-white"
-      style={{
-        backgroundImage: "url('https://i.ibb.co/bYLHPRb/itscoming.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center 30%",
-      }}
-    >
+    <div className="relative min-h-screen w-full text-white overflow-hidden">
+      {/* Background Video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src="/82A5BB2C-A83C-4033-BEA1-3598CE532B8E.mp4" type="video/mp4" />
+      </video>
+
+      {/* Dark overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/80" />
 
       <main className="relative z-10 flex min-h-screen flex-col items-center justify-between p-4 md:p-10 pb-28">
