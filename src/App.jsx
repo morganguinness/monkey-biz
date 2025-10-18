@@ -1,401 +1,249 @@
-import React, { useState, useEffect } from "react";
+/** Updated Discord logo size + partner links */
+import React, { useEffect, useMemo, useState } from "react";
+import { motion } from "framer-motion";
 
-export default function MonkeyBizLanding() {
-  const [showOverlay, setShowOverlay] = useState(false);
-  const [showVocab, setShowVocab] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+// === 🔗 EDIT THESE LINKS ===
+const LINKS = {
+  discord: "https://t.co/pGR58q9ZCH",
+  x: "https://x.com/monkeybizio",
+  mint: "https://yoursite.com/mint",
+};
 
-  // ESC key to close overlays and mobile menu
+const PARTNERS = [
+  {
+    name: "Nord VPN",
+    logo: "https://pbs.twimg.com/profile_images/1618629073969750018/_J6Qi3VW_400x400.jpg",
+    url: "https://go.nordvpn.net/aff_c?offer_id=15&aff_id=132230&url_id=902",
+  },
+  {
+    name: "Bro Bets",
+    logo: "https://pbs.twimg.com/profile_images/1851223281413607424/mOqQuuhh_400x400.jpg",
+    url: "https://brobets.io/?ref=MBusinesss",
+  },
+  {
+    name: "GoMining",
+    logo: "https://pbs.twimg.com/profile_images/1874931488254197760/nO9WZ7C7_400x400.jpg",
+    url: "https://gomining.com/?ref=YQTPJ0D",
+  },
+  {
+    name: "TapTrade",
+    logo: "https://taptrade.io/images/TAP-logo-large.png",
+    url: "https://taptrade.io/?affiliate=GZVAAisq1D",
+  },
+  {
+    name: "SolGods",
+    logo: "https://pbs.twimg.com/profile_images/1975650569822846976/oFVcb5bY_400x400.jpg",
+    url: "https://solcity.ai/",
+  },
+];
+
+// 🖼️ NFT image URLs
+const NFT_IMAGES = [
+  "https://i.ibb.co/Kx3PDLqh/mb1.png",
+  "https://i.ibb.co/HLRDBVYp/mb2.jpg",
+  "https://i.ibb.co/4Z0bsdd7/mb3.png",
+  "https://i.ibb.co/60Zp2QJr/mb4.jpg",
+  "https://i.ibb.co/NdQMSgrJ/mb5.png",
+  "https://i.ibb.co/RGCZJshv/mb6.jpg",
+  "https://i.ibb.co/TxX9Vkhd/mb7.png",
+  "https://i.ibb.co/whB4qQ6G/mb12.jpg",
+  "https://i.ibb.co/hRJw0Tcr/mb11.jpg",
+  "https://i.ibb.co/1GKMd2wx/mb8.jpg",
+  "https://i.ibb.co/rf7wPHmY/mb9.png",
+  "https://i.ibb.co/R4BkyTG2/mb10.png",
+];
+
+const TARGET_ISO = "2025-11-05T20:00:00Z";
+
+export function getTimeParts(ms) {
+  const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return { days, hours, minutes, seconds };
+}
+
+function useCountdown(targetISO) {
+  const target = useMemo(() => new Date(targetISO).getTime(), [targetISO]);
+  const [now, setNow] = useState(Date.now());
+
   useEffect(() => {
-    const handleKey = (e) => {
-      if (e.key === "Escape") {
-        setShowOverlay(false);
-        setShowVocab(false);
-        setMobileOpen(false);
-      }
-    };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const diff = Math.max(0, target - now);
+  const { days, hours, minutes, seconds } = getTimeParts(diff);
+  const isLive = diff === 0;
+  return { days, hours, minutes, seconds, isLive };
+}
+
+const Stat = ({ label, value }) => (
+  <div className="flex flex-col items-center justify-center px-4">
+    <div className="text-5xl md:text-7xl font-extrabold tracking-tight tabular-nums drop-shadow-sm">
+      {String(value).padStart(2, "0")}
+    </div>
+    <div className="mt-1 text-xs md:text-sm uppercase tracking-[0.2em] opacity-80">{label}</div>
+  </div>
+);
+
+const PartnerLogo = ({ url, logo, name }) => (
+  <a
+    href={url}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center"
+  >
+    <img
+      src={logo}
+      alt={name}
+      className="w-10 h-10 object-cover rounded-full opacity-80 hover:opacity-100 transition"
+    />
+  </a>
+);
+
+function BottomCarousel({ images }) {
+  const track = [...images, ...images];
+  return (
+    <div className="pointer-events-auto absolute bottom-0 left-0 right-0 z-[5]">
+      <div className="absolute -top-10 left-0 right-0 h-10 bg-gradient-to-b from-transparent to-black/60" />
+
+      <div className="relative w-full overflow-hidden bg-black/30 backdrop-blur-sm border-t border-white/10">
+        <motion.div
+          className="flex items-center gap-4 py-3 px-2"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ duration: 30, ease: "linear", repeat: Infinity }}
+        >
+          {track.map((src, i) => (
+            <div key={i} className="shrink-0">
+              <img
+                src={src}
+                alt="NFT preview"
+                className="h-20 md:h-24 w-20 md:w-24 object-cover rounded-xl border border-white/20 shadow-sm hover:border-yellow-400 transition"
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+export default function LandingPage() {
+  const { days, hours, minutes, seconds, isLive } = useCountdown(TARGET_ISO);
+
+  useEffect(() => {
+    try {
+      const t1 = getTimeParts(((1*24+2)*3600 + 3*60 + 4) * 1000);
+      console.assert(t1.days === 1 && t1.hours === 2 && t1.minutes === 3 && t1.seconds === 4, "Test t1 failed", t1);
+      const t2 = getTimeParts(0);
+      console.assert(t2.days === 0 && t2.hours === 0 && t2.minutes === 0 && t2.seconds === 0, "Test t2 failed", t2);
+      const t3 = getTimeParts(59 * 1000);
+      console.assert(t3.seconds === 59 && t3.minutes === 0 && t3.hours === 0 && t3.days === 0, "Test t3 failed", t3);
+      const t4 = getTimeParts(48 * 3600 * 1000);
+      console.assert(t4.days === 2 && t4.hours === 0 && t4.minutes === 0 && t4.seconds === 0, "Test t4 failed", t4);
+    } catch (e) {
+      console.error("Self-tests failed:", e);
+    }
   }, []);
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-neutral-100 relative">
-      {/* Overlays */}
-      {showOverlay && (
-        <div
-          className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
-          onClick={() => setShowOverlay(false)}
-        >
-          <div
-            className="bg-neutral-900 p-6 rounded-2xl max-w-md text-center"
-            onClick={(e) => e.stopPropagation()}
+    <div
+      className="relative min-h-screen w-full text-white"
+      style={{
+        backgroundImage: "url('https://i.ibb.co/bYLHPRb/itscoming.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center 30%",
+      }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/80" />
+
+      <main className="relative z-10 flex min-h-screen flex-col items-center justify-between p-6 md:p-10 pb-28">
+        {/* Top bar */}
+        <div className="w-full flex justify-between items-center">
+          {/* Partners */}
+          <div className="flex flex-col gap-1">
+            <span className="text-xs uppercase tracking-wider opacity-70">Join our partners whilst you wait</span>
+            <div className="flex gap-3 flex-wrap">
+              {PARTNERS.map((partner, index) => (
+                <PartnerLogo key={index} {...partner} />
+              ))}
+            </div>
+          </div>
+
+          {/* Social icons only */}
+          <div className="flex gap-4">
+            <a href={LINKS.discord} target="_blank" rel="noopener noreferrer">
+              <img src="https://pngimg.com/d/discord_PNG3.png" alt="Discord" className="w-9 h-9 hover:opacity-80 transition" />
+            </a>
+            <a href={LINKS.x} target="_blank" rel="noopener noreferrer">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/X_logo_2023_%28white%29.png/500px-X_logo_2023_%28white%29.png" alt="X" className="w-8 h-8 hover:opacity-80 transition" />
+            </a>
+          </div>
+        </div>
+
+        {/* Center countdown */}
+        <section className="flex flex-col items-center text-center mt-32 md:mt-44">
+          <motion.div
+            initial={{ scale: 0.98, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mt-8 rounded-3xl border border-white/15 bg-black/30 backdrop-blur-md px-6 py-5 md:px-10 md:py-8 shadow-lg"
+            aria-live="polite"
           >
-            <h3 className="text-2xl font-bold mb-4">🚀 Start Here</h3>
-            <p className="text-neutral-300 mb-3">1. Get a wallet (Phantom, MetaMask, Trust Wallet)</p>
-            <p className="text-neutral-300 mb-3">2. Add funds via exchange (Binance, Coinbase, OKX)</p>
-            <p className="text-neutral-300 mb-3">3. Explore NFTs, DeFi, and Casinos responsibly</p>
-            <p className="text-neutral-400 text-sm">Close this window by clicking outside or pressing ESC.</p>
-          </div>
-        </div>
-      )}
+            {isLive ? (
+              <div className="text-3xl md:text-5xl font-black tracking-tight">LIVE NOW</div>
+            ) : (
+              <div className="flex items-center gap-4 md:gap-6">
+                <Stat label="Days" value={days} />
+                <div className="text-4xl md:text-6xl opacity-70">:</div>
+                <Stat label="Hours" value={hours} />
+                <div className="text-4xl md:text-6xl opacity-70">:</div>
+                <Stat label="Mins" value={minutes} />
+                <div className="text-4xl md:text-6xl opacity-70">:</div>
+                <Stat label="Secs" value={seconds} />
+              </div>
+            )}
+          </motion.div>
 
-      {showVocab && (
-        <div
-          className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
-          onClick={() => setShowVocab(false)}
-        >
-          <div
-            className="bg-neutral-900 p-6 rounded-2xl max-w-md text-left"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 className="text-2xl font-bold mb-4">📚 Key Vocab</h3>
-            <ul className="space-y-2 text-neutral-300">
-              <li><strong>Wallet:</strong> App or device to store crypto.</li>
-              <li><strong>DEX:</strong> Decentralized Exchange (peer-to-peer trading).</li>
-              <li><strong>CEX:</strong> Centralized Exchange like Binance or Coinbase.</li>
-              <li><strong>NFT:</strong> Non-fungible token, unique digital item.</li>
-              <li><strong>DeFi:</strong> Decentralized Finance, on-chain money apps.</li>
-              <li><strong>DYOR:</strong> Do Your Own Research.</li>
-            </ul>
-            <p className="text-neutral-400 text-sm mt-4">Click outside or press ESC to close.</p>
-          </div>
-        </div>
-      )}
-
-      {/* Nav */}
-      <header className="sticky top-0 z-40 backdrop-blur bg-neutral-950/70 border-b border-neutral-800">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <a href="#home" className="flex items-center gap-2">
-            <span className="text-2xl">🍌</span>
-            <span className="font-bold text-lg tracking-tight">Monkey Business</span>
-          </a>
-          <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#picks" className="hover:text-yellow-300">Must Haves</a>
-            <a href="#starter-kit" className="hover:text-yellow-300">Starter Kit</a>
-            <a href="#guides" className="hover:text-yellow-300">Guides</a>
-            <a href="#community" className="hover:text-yellow-300">Community</a>
-          </nav>
-          <button
-            onClick={() => setMobileOpen((v) => !v)}
-            aria-expanded={mobileOpen}
-            aria-controls="mobile-nav"
-            className="md:hidden inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-neutral-700 bg-neutral-900 text-neutral-100"
-          >
-            ☰ Menu
-          </button>
-        </div>
-      </header>
-
-      {/* Mobile Nav */}
-      {mobileOpen && (
-        <div id="mobile-nav" className="md:hidden border-b border-neutral-800 bg-neutral-950/95 backdrop-blur px-4 py-3">
-          <div className="flex flex-col gap-3">
-            <a href="#picks" onClick={() => setMobileOpen(false)} className="py-2 border border-neutral-800 rounded-lg text-center hover:border-yellow-300">Must Haves</a>
-            <a href="#starter-kit" onClick={() => setMobileOpen(false)} className="py-2 border border-neutral-800 rounded-lg text-center hover:border-yellow-300">Starter Kit</a>
-            <a href="#guides" onClick={() => setMobileOpen(false)} className="py-2 border border-neutral-800 rounded-lg text-center hover:border-yellow-300">Guides</a>
-            <a href="#community" onClick={() => setMobileOpen(false)} className="py-2 border border-neutral-800 rounded-lg text-center hover:border-yellow-300">Community</a>
-            <div className="flex gap-3 pt-1">
-              <button onClick={() => { setShowOverlay(true); setMobileOpen(false); }} className="flex-1 px-4 py-2 rounded-xl bg-yellow-300 text-neutral-900 font-semibold">Start Here</button>
-              <button onClick={() => { setShowVocab(true); setMobileOpen(false); }} className="flex-1 px-4 py-2 rounded-xl border border-neutral-700">Key Vocab</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Hero */}
-      <section
-        id="home"
-        className="relative overflow-hidden bg-cover bg-center min-h-[90svh] md:min-h-screen"
-        style={{ backgroundImage: "url('https://monkeyplanner.carrd.co/assets/images/image04.jpg?v=66515d9d')", backgroundPosition: "center 30%" }}
-      >
-        <div className="bg-neutral-950/70 flex items-end justify-center text-center min-h-[90svh] md:min-h-screen">
-          <div className="max-w-3xl px-4 pb-28">
-            <p className="text-neutral-200 text-lg md:text-xl">
-              Everything you need to trade, play and navigate Web3.
-            </p>
-            <div className="mt-8 flex flex-col sm:flex-row justify-center gap-3">
-              <button
-                onClick={() => setShowOverlay(true)}
-                className="px-5 py-3 rounded-2xl bg-yellow-300 text-neutral-900 font-semibold"
-              >
-                🚀 Start Here
-              </button>
-              <button
-                onClick={() => setShowVocab(true)}
-                className="px-5 py-3 rounded-2xl border border-neutral-200 bg-neutral-950/50 text-neutral-100 hover:border-neutral-400"
-              >
-                📚 Key Vocab
-              </button>
-            </div>
-            <p className="mt-6 text-sm text-neutral-200">
-              Degen-tested, beginner-friendly. Always DYOR. Not financial advice.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Must Haves (Top Picks) */}
-      <section id="picks" className="border-t border-neutral-800">
-        <div className="max-w-6xl mx-auto px-4 py-16">
-          <h2 className="text-3xl md:text-4xl font-bold">🔥 Monkey’s Must Haves</h2>
-          <p className="mt-2 text-neutral-300 max-w-2xl">
-            Essential affiliate partners—curated for performance, safety, and ease of use.
-          </p>
-          <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-            <PickCard
-              image="https://pbs.twimg.com/profile_images/1874931488254197760/nO9WZ7C7_400x400.jpg"
-              title="Featured Mining: GoMining"
-              copy="Go mining right from your phone and harness the power of verified data centers. It’s mining made easy, anytime, anywhere!"
-              cta="Start Mining"
-              href="https://gomining.com/?ref=YQTPJ0D"
-              extraLink={{ href: "https://x.com/GoMining_token" }}
-            />
-            <PickCard
-              image="https://pbs.twimg.com/profile_images/1851223281413607424/mOqQuuhh_400x400.jpg"
-              title="Featured Casino: Bro Bets"
-              copy="Slots, Roulette, Sportsbook, Predictions & more. Deposit in $SOL, $BTC, $ETH."
-              cta="Play Now"
-              href="https://brobets.io/?ref=MBusinesss"
-              extraLink={{ href: "https://x.com/BroBetsIo" }}
-            />
-            <PickCard
-              image="https://taptrade.io/images/TAP-logo-large.png"
-              title="Featured Trading: TapTrade"
-              copy="The Premium AI Trading Suite. Signals on Crypto, Stocks, Forex, and Memecoins."
-              cta="Trade Now"
-              href="https://taptrade.io/?affiliate=GZVAAisq1D"
-              extraLink={{ href: "https://x.com/TAPfintech" }}
-            />
-            <PickCard
-              image="https://pbs.twimg.com/profile_images/1618629073969750018/_J6Qi3VW_400x400.jpg"
-              title="Featured Security: NordVPN"
-              copy="Experience the internet without anyone looking over your shoulder. Work, stream, and play safely with the world’s leading VPN."
-              cta="Get VPN"
-              href="https://go.nordvpn.net/aff_c?offer_id=15&aff_id=132230&url_id=902"
-              extraLink={{ href: "https://x.com/NordVPN" }}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Starter Kit */}
-      <section id="starter-kit" className="border-t border-neutral-800">
-        <div className="max-w-6xl mx-auto px-4 py-16">
-          <h2 className="text-3xl md:text-4xl font-bold">🧰 Monkey-Approved Starter Kit</h2>
-          <p className="mt-2 text-neutral-300 max-w-2xl">
-            The essential toolbox to start and scale your Web3 journey.
-          </p>
-          <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            <ToolCard
-              icon="🔐"
-              title="Wallets"
-              copy="Hot wallets, hardware wallets, and multi-sig setups."
-              items={[
-                { name: "MetaMask", href: "https://metamask.io/", badge: "Ethereum" },
-                { name: "Trust Wallet", href: "https://trustwallet.com/", badge: "Multi-chain" },
-                { name: "Phantom", href: "https://phantom.app/", badge: "Solana" },
-                { name: "Ledger", href: "https://www.ledger.com/", badge: "Hardware" },
-                { name: "Coinbase Wallet", href: "https://www.coinbase.com/wallet", badge: "CEX Wallet" },
-                { name: "Exodus", href: "https://www.exodus.com/", badge: "Multi-asset" },
-                { name: "Rainbow", href: "https://rainbow.me/", badge: "Ethereum" },
-                { name: "Safe (Gnosis)", href: "https://safe.global/", badge: "Multi-sig" },
-              ]}
-            />
-            <ToolCard
-              icon="💱"
-              title="Exchanges"
-              copy="Centralized and decentralized options for buying and trading."
-              items={[
-                { name: "Binance", href: "https://www.binance.com/", badge: "CEX" },
-                { name: "Coinbase", href: "https://www.coinbase.com/", badge: "CEX" },
-                { name: "Bybit", href: "https://www.bybit.com/", badge: "CEX" },
-                { name: "OKX", href: "https://www.okx.com/", badge: "CEX" },
-                { name: "Uniswap", href: "https://app.uniswap.org/", badge: "DEX" },
-                { name: "TapTrade", href: "https://taptrade.io/?affiliate=GZVAAisq1D", badge: "Trading" },
-              ]}
-            />
-            <ToolCard
-              icon="🎮"
-              title="Play & Earn"
-              copy="Casinos, GameFi and other play-to-earn platforms. Play responsibly."
-              items={[
-                { name: "Bro Bets", href: "https://brobets.io/?ref=MBusinesss", badge: "Casino" },
-                { name: "Stake", href: "https://stake.com/", badge: "Casino" },
-                { name: "Zed Run", href: "https://zed.run/", badge: "GameFi" },
-              ]}
-            />
-            <ToolCard
-              icon="🖼️"
-              title="NFTs & Marketplaces"
-              copy="Top places to mint, buy, and sell NFTs."
-              items={[
-                { name: "Magic Eden", href: "https://magiceden.io/", badge: "Solana" },
-                { name: "OpenSea", href: "https://opensea.io/", badge: "Ethereum" },
-                { name: "Launch My NFT", href: "https://launchmynft.io/", badge: "Creator" },
-                { name: "Blur", href: "https://blur.io/", badge: "Pro Traders" },
-              ]}
-            />
-            <ToolCard
-              icon="📊"
-              title="Analytics & Trading"
-              copy="Tools for charts, analytics, and on-chain data."
-              items={[
-                { name: "DEX Screener", href: "https://dexscreener.com/", badge: "Charts" },
-                { name: "TradingView", href: "https://www.tradingview.com/", badge: "Charts" },
-                { name: "GMX", href: "https://gmx.io/", badge: "Perps" },
-                { name: "1inch", href: "https://1inch.io/", badge: "Aggregator" },
-              ]}
-            />
-            <ToolCard
-              icon="🛠️"
-              title="Utilities"
-              copy="Extra tools, VPNs, productivity, and safety."
-              items={[
-                { name: "GoMining", href: "https://gomining.com/?ref=YQTPJ0D", badge: "Mining" },
-                { name: "NordVPN", href: "https://go.nordvpn.net/aff_c?offer_id=15&aff_id=132230&url_id=902", badge: "VPN" },
-                { name: "NordPass", href: "https://go.nordpass.io/aff_c?offer_id=488&aff_id=132230&url_id=9356", badge: "Password" },
-                { name: "FlxTime", href: "http://www.flxtime.fun", badge: "Mining" },
-                { name: "Notion", href: "https://www.notion.so/", badge: "Productivity" },
-              ]}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Guides (privacy‑enhanced embeds, no playlist overlay) */}
-      <section id="guides" className="border-t border-neutral-800">
-        <div className="max-w-6xl mx-auto px-4 py-16">
-          <h2 className="text-3xl md:text-4xl font-bold">📺 Guides</h2>
-          <p className="mt-2 text-neutral-300 max-w-2xl">
-            Watch quick tutorials and how-tos to sharpen your Web3 skills.
-          </p>
-
-          {/* Embedded videos */}
-          <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            <div className="aspect-video">
-              <iframe
-                className="w-full h-full rounded-xl"
-                src="https://www.youtube-nocookie.com/embed/GmRbLcmX4A4?rel=0"
-                title="Intro to Web3 & Wallets"
-                loading="lazy"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-            <div className="aspect-video">
-              <iframe
-                className="w-full h-full rounded-xl"
-                src="https://www.youtube-nocookie.com/embed/upIfGA0R30o?rel=0"
-                title="DeFi Basics in 10 Minutes"
-                loading="lazy"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-            <div className="aspect-video">
-              <iframe
-                className="w-full h-full rounded-xl"
-                src="https://www.youtube-nocookie.com/embed/x1ORD2BNuDg?rel=0"
-                title="NFT Marketplaces Explained"
-                loading="lazy"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Community */}
-      <section id="community" className="border-t border-neutral-800">
-        <div className="max-w-6xl mx-auto px-4 py-16 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold">🤝 Join Our Community</h2>
-          <p className="mt-2 text-neutral-300 max-w-2xl mx-auto">
-            Connect with fellow degens, builders, and traders. Share alpha and grow together.
-          </p>
-          <div className="mt-8 flex justify-center gap-5">
-            <a href="https://x.com/monkeybizio" target="_blank" rel="noopener noreferrer" className="px-5 py-3 rounded-xl bg-neutral-900 border border-neutral-700 hover:border-yellow-300">𝕏 Follow us on X</a>
-            <a href="https://discord.gg/yarVDEMNjm" target="_blank" rel="noopener noreferrer" className="px-5 py-3 rounded-xl bg-neutral-900 border border-neutral-700 hover:border-yellow-300">💬 Join Discord</a>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-}
-
-function ToolCard({ icon, title, copy, items }) {
-  const [expanded, setExpanded] = useState(false);
-  const visibleItems = expanded ? items : items.slice(0, 3);
-
-  return (
-    <div className="rounded-2xl border border-neutral-800 bg-neutral-900/40 p-5">
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <span className="text-2xl" aria-hidden>{icon}</span>
-          <h3 className="text-xl font-semibold">{title}</h3>
-        </div>
-        {items.length > 3 && (
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className="text-sm text-yellow-300 hover:underline"
-            aria-label={expanded ? `Collapse ${title}` : `Expand ${title}`}
-          >
-            {expanded ? "▲" : "▼"}
-          </button>
-        )}
-      </div>
-      <p className="mt-2 text-neutral-300 text-sm">{copy}</p>
-      <ul className="mt-4 space-y-2">
-        {visibleItems.map((it, i) => (
-          <li key={i} className="flex items-center justify-between gap-2">
-            <a href={it.href} className="hover:text-yellow-300 underline underline-offset-4" target="_blank" rel="noopener noreferrer">{it.name}</a>
-            <span className="text-xs text-neutral-400 px-2 py-1 rounded-full border border-neutral-700">{it.badge}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function PickCard({ image, title, copy, cta, href, extraLink, badge }) {
-  return (
-    <div className="relative rounded-2xl border border-neutral-800 bg-neutral-900/40 p-5 flex flex-col">
-      {badge && (
-        <span className="absolute top-3 left-3 text-[11px] uppercase tracking-wide bg-yellow-300/90 text-neutral-900 border border-yellow-400 rounded-full px-2 py-0.5 shadow">
-          {badge}
-        </span>
-      )}
-      {image && (
-        <div className="flex items-center justify-between">
-          <img src={image} alt={title} className="w-12 h-12 rounded-full mb-3" />
-          {extraLink && (
+          {/* CTA buttons */}
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <a
-              href={extraLink.href}
+              href={LINKS.mint}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-neutral-400 hover:text-yellow-300 text-xl"
-              title="View on X"
+              className={`inline-flex items-center justify-center rounded-2xl px-6 py-3 text-base font-semibold transition backdrop-blur-md border hover:border-yellow-400 hover:text-yellow-400 ${
+                isLive
+                  ? "bg-white text-black hover:bg-yellow-400 hover:text-black border-white"
+                  : "bg-white/10 text-white border-white/20 cursor-not-allowed"
+              }`}
+              aria-disabled={!isLive}
             >
-              𝕏
+              {isLive ? "Mint Now" : "Mint (Coming Soon)"}
             </a>
-          )}
-        </div>
-      )}
-      <h3 className="text-xl font-semibold">{title}</h3>
-      <p className="mt-2 text-neutral-300 text-sm flex-1 whitespace-pre-line">{copy}</p>
-      <div className="mt-4 flex justify-center">
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-yellow-300 text-neutral-900 font-semibold"
-        >
-          {cta}
-        </a>
-      </div>
+          </div>
+        </section>
+
+        <footer className="relative z-10 w-full flex items-center justify-between pt-10 text-xs opacity-80">
+          <div>© {new Date().getFullYear()} It’s Coming</div>
+          <div className="flex items-center gap-3">
+            <a href={LINKS.discord} target="_blank" rel="noopener noreferrer" className="underline-offset-2 hover:text-yellow-400 hover:underline">Discord</a>
+            <span>•</span>
+            <a href={LINKS.x} target="_blank" rel="noopener noreferrer" className="underline-offset-2 hover:text-yellow-400 hover:underline">X</a>
+            <span>•</span>
+            <a href={LINKS.mint} target="_blank" rel="noopener noreferrer" className="underline-offset-2 hover:text-yellow-400 hover:underline">Mint</a>
+          </div>
+        </footer>
+      </main>
+
+      <BottomCarousel images={NFT_IMAGES} />
+
+      <div
+        className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-20"
+        style={{ backgroundImage: "radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px)", backgroundSize: "3px 3px" }}
+      />
     </div>
   );
 }
