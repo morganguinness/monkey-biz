@@ -1,14 +1,14 @@
-/** Updated Discord logo size + partner links */
 import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 
-// === 🔗 EDIT THESE LINKS ===
+// === LINKS (edit these) ===
 const LINKS = {
   discord: "https://t.co/pGR58q9ZCH",
   x: "https://x.com/monkeybizio",
   mint: "https://yoursite.com/mint",
 };
 
+// Partners
 const PARTNERS = [
   {
     name: "Nord VPN",
@@ -37,7 +37,7 @@ const PARTNERS = [
   },
 ];
 
-// 🖼️ NFT image URLs
+// NFT carousel images
 const NFT_IMAGES = [
   "https://i.ibb.co/Kx3PDLqh/mb1.png",
   "https://i.ibb.co/HLRDBVYp/mb2.jpg",
@@ -53,8 +53,10 @@ const NFT_IMAGES = [
   "https://i.ibb.co/R4BkyTG2/mb10.png",
 ];
 
+// Target: 5 Nov 2025 @ 20:00 UK (Nov = GMT, so use Z)
 const TARGET_ISO = "2025-11-05T20:00:00Z";
 
+// ---------- time helpers ----------
 export function getTimeParts(ms) {
   const totalSeconds = Math.max(0, Math.floor(ms / 1000));
   const days = Math.floor(totalSeconds / 86400);
@@ -84,7 +86,9 @@ const Stat = ({ label, value }) => (
     <div className="text-5xl md:text-7xl font-extrabold tracking-tight tabular-nums drop-shadow-sm">
       {String(value).padStart(2, "0")}
     </div>
-    <div className="mt-1 text-xs md:text-sm uppercase tracking-[0.2em] opacity-80">{label}</div>
+    <div className="mt-1 text-xs md:text-sm uppercase tracking-[0.2em] opacity-80">
+      {label}
+    </div>
   </div>
 );
 
@@ -94,6 +98,7 @@ const PartnerLogo = ({ url, logo, name }) => (
     target="_blank"
     rel="noopener noreferrer"
     className="inline-flex items-center"
+    aria-label={name}
   >
     <img
       src={logo}
@@ -104,11 +109,10 @@ const PartnerLogo = ({ url, logo, name }) => (
 );
 
 function BottomCarousel({ images }) {
-  const track = [...images, ...images];
+  const track = [...images, ...images]; // seamless loop
   return (
     <div className="pointer-events-auto absolute bottom-0 left-0 right-0 z-[5]">
       <div className="absolute -top-10 left-0 right-0 h-10 bg-gradient-to-b from-transparent to-black/60" />
-
       <div className="relative w-full overflow-hidden bg-black/30 backdrop-blur-sm border-t border-white/10">
         <motion.div
           className="flex items-center gap-4 py-3 px-2"
@@ -134,16 +138,33 @@ function BottomCarousel({ images }) {
 export default function LandingPage() {
   const { days, hours, minutes, seconds, isLive } = useCountdown(TARGET_ISO);
 
+  // lightweight runtime tests
   useEffect(() => {
     try {
-      const t1 = getTimeParts(((1*24+2)*3600 + 3*60 + 4) * 1000);
-      console.assert(t1.days === 1 && t1.hours === 2 && t1.minutes === 3 && t1.seconds === 4, "Test t1 failed", t1);
+      const t1 = getTimeParts(((1 * 24 + 2) * 3600 + 3 * 60 + 4) * 1000);
+      console.assert(
+        t1.days === 1 && t1.hours === 2 && t1.minutes === 3 && t1.seconds === 4,
+        "Test t1 failed",
+        t1
+      );
       const t2 = getTimeParts(0);
-      console.assert(t2.days === 0 && t2.hours === 0 && t2.minutes === 0 && t2.seconds === 0, "Test t2 failed", t2);
+      console.assert(
+        t2.days === 0 && t2.hours === 0 && t2.minutes === 0 && t2.seconds === 0,
+        "Test t2 failed",
+        t2
+      );
       const t3 = getTimeParts(59 * 1000);
-      console.assert(t3.seconds === 59 && t3.minutes === 0 && t3.hours === 0 && t3.days === 0, "Test t3 failed", t3);
+      console.assert(
+        t3.seconds === 59 && t3.minutes === 0 && t3.hours === 0 && t3.days === 0,
+        "Test t3 failed",
+        t3
+      );
       const t4 = getTimeParts(48 * 3600 * 1000);
-      console.assert(t4.days === 2 && t4.hours === 0 && t4.minutes === 0 && t4.seconds === 0, "Test t4 failed", t4);
+      console.assert(
+        t4.days === 2 && t4.hours === 0 && t4.minutes === 0 && t4.seconds === 0,
+        "Test t4 failed",
+        t4
+      );
     } catch (e) {
       console.error("Self-tests failed:", e);
     }
@@ -158,33 +179,44 @@ export default function LandingPage() {
         backgroundPosition: "center 30%",
       }}
     >
+      {/* overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/80" />
 
       <main className="relative z-10 flex min-h-screen flex-col items-center justify-between p-6 md:p-10 pb-28">
-        {/* Top bar */}
+        {/* top bar */}
         <div className="w-full flex justify-between items-center">
-          {/* Partners */}
+          {/* partners */}
           <div className="flex flex-col gap-1">
-            <span className="text-xs uppercase tracking-wider opacity-70">Join our partners whilst you wait</span>
+            <span className="text-xs uppercase tracking-wider opacity-70">
+              Join our partners whilst you wait
+            </span>
             <div className="flex gap-3 flex-wrap">
-              {PARTNERS.map((partner, index) => (
-                <PartnerLogo key={index} {...partner} />
+              {PARTNERS.map((partner, idx) => (
+                <PartnerLogo key={idx} {...partner} />
               ))}
             </div>
           </div>
 
-          {/* Social icons only */}
+          {/* socials (icons only) */}
           <div className="flex gap-4">
-            <a href={LINKS.discord} target="_blank" rel="noopener noreferrer">
-              <img src="https://pngimg.com/d/discord_PNG3.png" alt="Discord" className="w-9 h-9 hover:opacity-80 transition" />
+            <a href={LINKS.discord} target="_blank" rel="noopener noreferrer" aria-label="Discord">
+              <img
+                src="https://pngimg.com/d/discord_PNG3.png"
+                alt="Discord"
+                className="w-9 h-9 hover:opacity-80 transition"
+              />
             </a>
-            <a href={LINKS.x} target="_blank" rel="noopener noreferrer">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/X_logo_2023_%28white%29.png/500px-X_logo_2023_%28white%29.png" alt="X" className="w-8 h-8 hover:opacity-80 transition" />
+            <a href={LINKS.x} target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/X_logo_2023_%28white%29.png/500px-X_logo_2023_%28white%29.png"
+                alt="X"
+                className="w-8 h-8 hover:opacity-80 transition"
+              />
             </a>
           </div>
         </div>
 
-        {/* Center countdown */}
+        {/* countdown */}
         <section className="flex flex-col items-center text-center mt-32 md:mt-44">
           <motion.div
             initial={{ scale: 0.98, opacity: 0 }}
@@ -208,7 +240,7 @@ export default function LandingPage() {
             )}
           </motion.div>
 
-          {/* CTA buttons */}
+          {/* CTA */}
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <a
               href={LINKS.mint}
@@ -226,23 +258,50 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* footer */}
         <footer className="relative z-10 w-full flex items-center justify-between pt-10 text-xs opacity-80">
           <div>© {new Date().getFullYear()} It’s Coming</div>
           <div className="flex items-center gap-3">
-            <a href={LINKS.discord} target="_blank" rel="noopener noreferrer" className="underline-offset-2 hover:text-yellow-400 hover:underline">Discord</a>
+            <a
+              href={LINKS.discord}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline-offset-2 hover:text-yellow-400 hover:underline"
+            >
+              Discord
+            </a>
             <span>•</span>
-            <a href={LINKS.x} target="_blank" rel="noopener noreferrer" className="underline-offset-2 hover:text-yellow-400 hover:underline">X</a>
+            <a
+              href={LINKS.x}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline-offset-2 hover:text-yellow-400 hover:underline"
+            >
+              X
+            </a>
             <span>•</span>
-            <a href={LINKS.mint} target="_blank" rel="noopener noreferrer" className="underline-offset-2 hover:text-yellow-400 hover:underline">Mint</a>
+            <a
+              href={LINKS.mint}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline-offset-2 hover:text-yellow-400 hover:underline"
+            >
+              Mint
+            </a>
           </div>
         </footer>
       </main>
 
       <BottomCarousel images={NFT_IMAGES} />
 
+      {/* subtle texture */}
       <div
         className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-20"
-        style={{ backgroundImage: "radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px)", backgroundSize: "3px 3px" }}
+        style={{
+          backgroundImage:
+            "radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px)",
+          backgroundSize: "3px 3px",
+        }}
       />
     </div>
   );
