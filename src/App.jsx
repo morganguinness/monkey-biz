@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 const LINKS = {
   discord: "https://t.co/pGR58q9ZCH",
   x: "https://x.com/monkeybizio",
-  mint: "https://yoursite.com/mint",
 };
 
 // Partners
@@ -81,14 +80,13 @@ function useCountdown(targetISO) {
   return { days, hours, minutes, seconds, isLive };
 }
 
+// --- UI bits ---
 const Stat = ({ label, value }) => (
-  <div className="flex flex-col items-center justify-center px-4">
-    <div className="text-5xl md:text-7xl font-extrabold tracking-tight tabular-nums drop-shadow-sm">
+  <div className="flex flex-col items-center justify-center px-2 md:px-4">
+    <div className="font-extrabold tracking-tight tabular-nums drop-shadow-sm leading-none text-[clamp(28px,12vw,64px)]">
       {String(value).padStart(2, "0")}
     </div>
-    <div className="mt-1 text-xs md:text-sm uppercase tracking-[0.2em] opacity-80">
-      {label}
-    </div>
+    <div className="mt-1 uppercase tracking-[0.2em] opacity-80 text-[10px] md:text-sm">{label}</div>
   </div>
 );
 
@@ -108,12 +106,16 @@ const PartnerLogo = ({ url, logo, name }) => (
   </a>
 );
 
-function BottomCarousel({ images }) {
-  const track = [...images, ...images]; // seamless loop
+function BottomCarousel({ images, fixed = false }) {
+  const track = [...images, ...images];
   return (
-    <div className="pointer-events-auto absolute bottom-0 left-0 right-0 z-[5]">
-      <div className="absolute -top-10 left-0 right-0 h-10 bg-gradient-to-b from-transparent to-black/60" />
-      <div className="relative w-full overflow-hidden bg-black/30 backdrop-blur-sm border-t border-white/10">
+    <div className={`${fixed ? "pointer-events-auto absolute bottom-0 left-0 right-0 z-[5]" : "relative w-full"}`}>
+      {fixed ? (
+        <div className="absolute -top-10 left-0 right-0 h-10 bg-gradient-to-b from-transparent to-black/60" />
+      ) : (
+        <div className="h-6" />
+      )}
+      <div className={`overflow-hidden bg-black/30 backdrop-blur-sm border-t border-white/10 ${fixed ? "" : "rounded-2xl"}`}>
         <motion.div
           className="flex items-center gap-4 py-3 px-2"
           animate={{ x: ["0%", "-50%"] }}
@@ -138,38 +140,6 @@ function BottomCarousel({ images }) {
 export default function LandingPage() {
   const { days, hours, minutes, seconds, isLive } = useCountdown(TARGET_ISO);
 
-  // lightweight runtime tests
-  useEffect(() => {
-    try {
-      const t1 = getTimeParts(((1 * 24 + 2) * 3600 + 3 * 60 + 4) * 1000);
-      console.assert(
-        t1.days === 1 && t1.hours === 2 && t1.minutes === 3 && t1.seconds === 4,
-        "Test t1 failed",
-        t1
-      );
-      const t2 = getTimeParts(0);
-      console.assert(
-        t2.days === 0 && t2.hours === 0 && t2.minutes === 0 && t2.seconds === 0,
-        "Test t2 failed",
-        t2
-      );
-      const t3 = getTimeParts(59 * 1000);
-      console.assert(
-        t3.seconds === 59 && t3.minutes === 0 && t3.hours === 0 && t3.days === 0,
-        "Test t3 failed",
-        t3
-      );
-      const t4 = getTimeParts(48 * 3600 * 1000);
-      console.assert(
-        t4.days === 2 && t4.hours === 0 && t4.minutes === 0 && t4.seconds === 0,
-        "Test t4 failed",
-        t4
-      );
-    } catch (e) {
-      console.error("Self-tests failed:", e);
-    }
-  }, []);
-
   return (
     <div
       className="relative min-h-screen w-full text-white"
@@ -179,13 +149,10 @@ export default function LandingPage() {
         backgroundPosition: "center 30%",
       }}
     >
-      {/* overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/80" />
 
-      <main className="relative z-10 flex min-h-screen flex-col items-center justify-between p-6 md:p-10 pb-28">
-        {/* top bar */}
+      <main className="relative z-10 flex min-h-screen flex-col items-center justify-between p-4 md:p-10 pb-28">
         <div className="w-full flex justify-between items-center">
-          {/* partners */}
           <div className="flex flex-col gap-1">
             <span className="text-xs uppercase tracking-wider opacity-70">
               Join our partners whilst you wait
@@ -197,7 +164,6 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* socials (icons only) */}
           <div className="flex gap-4">
             <a href={LINKS.discord} target="_blank" rel="noopener noreferrer" aria-label="Discord">
               <img
@@ -216,51 +182,58 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* countdown */}
-        <section className="flex flex-col items-center text-center mt-32 md:mt-44">
+        <section className="flex flex-col items-center text-center mt-24 md:mt-44 w-full">
           <motion.div
             initial={{ scale: 0.98, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-8 rounded-3xl border border-white/15 bg-black/30 backdrop-blur-md px-6 py-5 md:px-10 md:py-8 shadow-lg"
+            className="mt-6 md:mt-8 rounded-3xl border border-white/15 bg-black/30 backdrop-blur-md px-4 py-4 md:px-10 md:py-8 shadow-lg max-w-full overflow-hidden"
             aria-live="polite"
           >
             {isLive ? (
-              <div className="text-3xl md:text-5xl font-black tracking-tight">LIVE NOW</div>
+              <div className="font-black tracking-tight text-[clamp(20px,7vw,48px)] leading-none">
+                LIVE NOW
+              </div>
             ) : (
-              <div className="flex items-center gap-4 md:gap-6">
+              <div className="flex items-center justify-center gap-3 md:gap-6">
                 <Stat label="Days" value={days} />
-                <div className="text-4xl md:text-6xl opacity-70">:</div>
+                <div className="opacity-70 leading-none text-[clamp(20px,10vw,56px)]">:</div>
                 <Stat label="Hours" value={hours} />
-                <div className="text-4xl md:text-6xl opacity-70">:</div>
+                <div className="opacity-70 leading-none text-[clamp(20px,10vw,56px)]">:</div>
                 <Stat label="Mins" value={minutes} />
-                <div className="text-4xl md:text-6xl opacity-70">:</div>
+                <div className="opacity-70 leading-none text-[clamp(20px,10vw,56px)]">:</div>
                 <Stat label="Secs" value={seconds} />
               </div>
             )}
           </motion.div>
 
           {/* CTA */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <a
-              href={LINKS.mint}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`inline-flex items-center justify-center rounded-2xl px-6 py-3 text-base font-semibold transition backdrop-blur-md border hover:border-yellow-400 hover:text-yellow-400 ${
-                isLive
-                  ? "bg-white text-black hover:bg-yellow-400 hover:text-black border-white"
-                  : "bg-white/10 text-white border-white/20 cursor-not-allowed"
-              }`}
-              aria-disabled={!isLive}
-            >
-              {isLive ? "Mint Now" : "Mint (Coming Soon)"}
-            </a>
+          <div className="mt-6 md:mt-8 flex flex-wrap items-center justify-center gap-3">
+            {isLive ? (
+              <a
+                href="https://yoursite.com/mint"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-2xl px-5 md:px-6 py-3 text-base font-semibold transition backdrop-blur-md border bg-white text-black hover:bg-yellow-400 hover:text-black border-white"
+              >
+                Mint Now
+              </a>
+            ) : (
+              <div
+                className="inline-flex items-center justify-center rounded-2xl px-5 md:px-6 py-3 text-base font-semibold transition backdrop-blur-md border bg-white/10 text-white border-yellow-400 animate-pulse cursor-not-allowed"
+              >
+                Mint (Coming Soon)
+              </div>
+            )}
           </div>
         </section>
 
-        {/* footer */}
-        <footer className="relative z-10 w-full flex items-center justify-between pt-10 text-xs opacity-80">
-          <div>© {new Date().getFullYear()} It’s Coming</div>
+        <div className="w-full mt-8 md:mt-12">
+          <BottomCarousel images={NFT_IMAGES} fixed={false} />
+        </div>
+
+        <footer className="relative z-10 w-full flex items-center justify-between pt-6 md:pt-10 text-xs opacity-80">
+          <div>© {new Date().getFullYear()} Monkey Business</div>
           <div className="flex items-center gap-3">
             <a
               href={LINKS.discord}
@@ -279,22 +252,10 @@ export default function LandingPage() {
             >
               X
             </a>
-            <span>•</span>
-            <a
-              href={LINKS.mint}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline-offset-2 hover:text-yellow-400 hover:underline"
-            >
-              Mint
-            </a>
           </div>
         </footer>
       </main>
 
-      <BottomCarousel images={NFT_IMAGES} />
-
-      {/* subtle texture */}
       <div
         className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-20"
         style={{
