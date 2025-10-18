@@ -81,12 +81,15 @@ function useCountdown(targetISO) {
 }
 
 // --- UI bits ---
+const Box = ({ children }) => (
+  <div className="px-3 md:px-4">{children}</div>
+);
 const Stat = ({ label, value }) => (
-  <div className="flex flex-col items-center justify-center px-2 md:px-4">
-    <div className="font-extrabold tracking-tight tabular-nums drop-shadow-sm leading-none text-[clamp(28px,12vw,64px)]">
+  <div className="flex flex-col items-center justify-center min-w-0">
+    <div className="font-extrabold tracking-tight tabular-nums drop-shadow-sm leading-none text-[clamp(26px,11vw,60px)]">
       {String(value).padStart(2, "0")}
     </div>
-    <div className="mt-1 uppercase tracking-[0.2em] opacity-80 text-[10px] md:text-sm">{label}</div>
+    <div className="mt-1 uppercase tracking-[0.18em] opacity-80 text-[10px] md:text-sm">{label}</div>
   </div>
 );
 
@@ -152,19 +155,23 @@ export default function LandingPage() {
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/80" />
 
       <main className="relative z-10 flex min-h-screen flex-col items-center justify-between p-4 md:p-10 pb-28">
-        <div className="w-full flex justify-between items-center">
-          <div className="flex flex-col gap-1">
-            <span className="text-xs uppercase tracking-wider opacity-70">
-              Join our partners whilst you wait
-            </span>
-            <div className="flex gap-3 flex-wrap">
+        {/* Top bar (responsive) */}
+        <div className="w-full flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+          {/* partners: vertical list on mobile, horizontal row on desktop */}
+          <div className="order-2 md:order-1 flex flex-col gap-2">
+            <span className="text-xs uppercase tracking-wider opacity-70">Join our partners whilst you wait</span>
+            <div className="flex flex-col md:flex-row md:flex-wrap gap-2 md:gap-3">
               {PARTNERS.map((partner, idx) => (
-                <PartnerLogo key={idx} {...partner} />
+                <div key={idx} className="flex items-center gap-2">
+                  <PartnerLogo {...partner} />
+                  <span className="text-xs opacity-80 md:hidden">{partner.name}</span>
+                </div>
               ))}
             </div>
           </div>
 
-          <div className="flex gap-4">
+          {/* socials top-right on desktop, hidden on mobile */}
+          <div className="hidden md:flex gap-4 order-2">
             <a href={LINKS.discord} target="_blank" rel="noopener noreferrer" aria-label="Discord">
               <img
                 src="https://pngimg.com/d/discord_PNG3.png"
@@ -182,12 +189,30 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <section className="flex flex-col items-center text-center mt-24 md:mt-44 w-full">
+        <section className="flex flex-col items-center text-center mt-20 md:mt-40 w-full">
+          {/* socials above timer on mobile only */}
+          <div className="mb-4 md:hidden flex items-center justify-center gap-4">
+            <a href={LINKS.discord} target="_blank" rel="noopener noreferrer" aria-label="Discord">
+              <img
+                src="https://pngimg.com/d/discord_PNG3.png"
+                alt="Discord"
+                className="w-9 h-9 hover:opacity-80 transition"
+              />
+            </a>
+            <a href={LINKS.x} target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/X_logo_2023_%28white%29.png/500px-X_logo_2023_%28white%29.png"
+                alt="X"
+                className="w-8 h-8 hover:opacity-80 transition"
+              />
+            </a>
+          </div>
+
           <motion.div
             initial={{ scale: 0.98, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-6 md:mt-8 rounded-3xl border border-white/15 bg-black/30 backdrop-blur-md px-4 py-4 md:px-10 md:py-8 shadow-lg max-w-full overflow-hidden"
+            className="mt-2 md:mt-4 rounded-3xl border border-white/15 bg-black/30 backdrop-blur-md px-3 py-3 md:px-10 md:py-8 shadow-lg max-w-[95vw] overflow-visible"
             aria-live="polite"
           >
             {isLive ? (
@@ -195,14 +220,14 @@ export default function LandingPage() {
                 LIVE NOW
               </div>
             ) : (
-              <div className="flex items-center justify-center gap-3 md:gap-6">
-                <Stat label="Days" value={days} />
-                <div className="opacity-70 leading-none text-[clamp(20px,10vw,56px)]">:</div>
-                <Stat label="Hours" value={hours} />
-                <div className="opacity-70 leading-none text-[clamp(20px,10vw,56px)]">:</div>
-                <Stat label="Mins" value={minutes} />
-                <div className="opacity-70 leading-none text-[clamp(20px,10vw,56px)]">:</div>
-                <Stat label="Secs" value={seconds} />
+              <div className="flex items-center justify-center gap-2 md:gap-6 px-1">
+                <Box><Stat label="Days" value={days} /></Box>
+                <div className="opacity-70 leading-none text-[clamp(18px,8.5vw,52px)]">:</div>
+                <Box><Stat label="Hours" value={hours} /></Box>
+                <div className="opacity-70 leading-none text-[clamp(18px,8.5vw,52px)]">:</div>
+                <Box><Stat label="Mins" value={minutes} /></Box>
+                <div className="opacity-70 leading-none text-[clamp(18px,8.5vw,52px)]">:</div>
+                <Box><Stat label="Secs" value={seconds} /></Box>
               </div>
             )}
           </motion.div>
