@@ -157,14 +157,13 @@ export default function LandingPage() {
       <main className="relative z-10 flex min-h-screen flex-col items-center justify-between p-4 md:p-10 pb-28">
         {/* Top bar (responsive) */}
         <div className="w-full flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-          {/* partners: vertical list on mobile, horizontal row on desktop */}
+          {/* partners: horizontal row on all sizes */}
           <div className="order-2 md:order-1 flex flex-col gap-2">
             <span className="text-xs uppercase tracking-wider opacity-70">Join our partners whilst you wait</span>
-            <div className="flex flex-col md:flex-row md:flex-wrap gap-2 md:gap-3">
+            <div className="flex flex-row flex-wrap gap-2 md:gap-3 justify-center md:justify-start">
               {PARTNERS.map((partner, idx) => (
                 <div key={idx} className="flex items-center gap-2">
                   <PartnerLogo {...partner} />
-                  <span className="text-xs opacity-80 md:hidden">{partner.name}</span>
                 </div>
               ))}
             </div>
