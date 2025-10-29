@@ -35,9 +35,9 @@ const NFT_IMAGES = [
 const TARGET_ISO = "2025-11-05T20:00:00Z";
 
 /** --------------------
- * Time helpers + hooks
+ * Time helpers + hooks (JS version)
  * -------------------- */
-function getTimeParts(ms: number) {
+function getTimeParts(ms) {
   const totalSeconds = Math.max(0, Math.floor(ms / 1000));
   const days = Math.floor(totalSeconds / 86400);
   const hours = Math.floor((totalSeconds % 86400) / 3600);
@@ -46,7 +46,7 @@ function getTimeParts(ms: number) {
   return { days, hours, minutes, seconds };
 }
 
-function useCountdown(targetISO: string) {
+function useCountdown(targetISO) {
   const target = React.useMemo(() => new Date(targetISO).getTime(), [targetISO]);
   const [now, setNow] = React.useState(Date.now());
 
@@ -62,13 +62,11 @@ function useCountdown(targetISO: string) {
 }
 
 /** --------------------
- * Presentational bits
+ * Presentational bits (JS version)
  * -------------------- */
-const Box: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="px-3 md:px-4">{children}</div>
-);
+const Box = ({ children }) => <div className="px-3 md:px-4">{children}</div>;
 
-const Stat: React.FC<{ label: string; value: number }> = ({ label, value }) => (
+const Stat = ({ label, value }) => (
   <div className="flex flex-col items-center justify-center min-w-0">
     <div className="font-extrabold tracking-tight tabular-nums drop-shadow-sm leading-none text-[clamp(26px,11vw,60px)]">
       {String(value).padStart(2, "0")}
@@ -77,13 +75,13 @@ const Stat: React.FC<{ label: string; value: number }> = ({ label, value }) => (
   </div>
 );
 
-const PartnerLogo: React.FC<{ url: string; logo: string; name: string }> = ({ url, logo, name }) => (
+const PartnerLogo = ({ url, logo, name }) => (
   <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center" aria-label={name}>
     <img src={logo} alt={name} className="w-10 h-10 object-cover rounded-full opacity-80 hover:opacity-100 transition" />
   </a>
 );
 
-function BottomCarousel({ images }: { images: string[] }) {
+function BottomCarousel({ images }) {
   const track = React.useMemo(() => [...images, ...images], [images]);
   return (
     <div className="relative w-full">
@@ -91,10 +89,10 @@ function BottomCarousel({ images }: { images: string[] }) {
         <div
           className="flex items-center gap-4 py-3 px-2 animate-[marquee_30s_linear_infinite]"
           style={{
-            // standard string keys for CSS vars to avoid JSX parser issues
+            // Use standard string keys for CSS vars (works in JSX)
             "--marquee-from": "0%",
             "--marquee-to": "-50%",
-          } as React.CSSProperties}
+          }}
         >
           {track.map((src, i) => (
             <div key={i} className="shrink-0">
@@ -122,7 +120,7 @@ const ROADMAP = [
   { icon: "🎮", title: "Gamification", body: "Seasonal quests, XP, and trait-boosted perks." },
   { icon: "🤝", title: "Partners+", body: "Deeper collabs with BroBets, GoMining, TapTrade, Nord, SolGods." },
   { icon: "📈", title: "Growth", body: "Listings, cross-chain bridge exploration, and IRL drops." },
-] as const;
+];
 
 function Roadmap() {
   return (
@@ -202,7 +200,7 @@ function Hero() {
 // --- Simplified UI-only BizGPT chat (mocked for preview) ---
 function ChatWidget() {
   const [open, setOpen] = React.useState(false);
-  const [msgs, setMsgs] = React.useState<{ role: "user" | "assistant"; content: string }[]>([
+  const [msgs, setMsgs] = React.useState([
     { role: "assistant", content: "Hey! I’m BizGPT 🐒 — ask about X growth, websites, branding, or Discord." },
   ]);
   const [input, setInput] = React.useState("");
@@ -211,7 +209,7 @@ function ChatWidget() {
     if (!input.trim()) return;
     const next = [...msgs, { role: "user", content: input.trim() }];
     const reply = {
-      role: "assistant" as const,
+      role: "assistant",
       content:
         "Goal noted.\n1) Clarify your niche.\n2) Ship a one-page site.\n3) Post a thread + CTA.\n\nHooks:\n• I built 3 websites in 24h…\n• The $0 to $1k/mo roadmap…\n• Stop overthinking your brand…\n\nWant the Reply Army boost or a free site slot? Say 'queue me'.",
     };
@@ -275,7 +273,7 @@ function ChatWidget() {
 }
 
 /** ---------------------------
- * Minimal internal test suite
+ * Minimal internal test suite (JS version)
  * ---------------------------
  * Runs once when the module is evaluated.
  */
@@ -306,7 +304,6 @@ function runInternalTests() {
     console.assert(Array.isArray(NFT_IMAGES) && NFT_IMAGES.length > 0, "NFT_IMAGES should be non-empty array");
     console.assert(typeof LINKS.discord === "string" && typeof LINKS.x === "string", "LINKS should be strings");
 
-    // All good
     console.debug("[Tests] ✓ All internal tests passed");
   } catch (e) {
     console.warn("[Tests] A test threw:", e);
@@ -359,5 +356,3 @@ export default function App() {
     </div>
   );
 }
-
-
