@@ -188,10 +188,14 @@ function Hero() {
       </div>
 
       <div className="mt-6 md:mt-8 flex flex-wrap items-center justify-center gap-3">
-        {/* As requested: keep CTA disabled; you'll flip it manually at mint time */}
-        <div className="inline-flex items-center justify-center rounded-2xl px-5 md:px-6 py-3 text-base font-semibold transition backdrop-blur-md border bg-white/10 text-white border-yellow-400 animate-pulse cursor-not-allowed">
-          Mint (Coming Soon)
-        </div>
+        <a
+          href="https://launchmynft.io/sol/20994"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center rounded-2xl px-5 md:px-6 py-3 text-base font-semibold transition backdrop-blur-md border bg-white text-black hover:bg-yellow-400 hover:text-black border-white"
+        >
+          Mint
+        </a>
       </div>
     </section>
   );
@@ -355,4 +359,6 @@ export default function App() {
       <ChatWidget />
     </div>
   );
+}
+
 }
