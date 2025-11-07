@@ -7,32 +7,43 @@ const LINKS = {
   mint: "https://launchmynft.io/sol/20994",
 };
 
-// Partners (SolGods is our headline partner; others appear as supporting logos)
-const HEADLINE_PARTNER = {
-  name: "SolGods",
-  logo:
-    "https://pbs.twimg.com/profile_images/1975650569822846976/oFVcb5bY_400x400.jpg",
-  url: "https://solcity.ai/",
-};
+// Community partners
+const COMMUNITY_PROJECTS = [
+  {
+    key: "community",
+    icon: "🌐",
+    title: "Community",
+    body:
+      "You are entering into a supportive ecosystem of top Solana projects working together to grow and support one another.",
+    partners: [
+      {
+        name: "SolGods",
+        logo: "https://pbs.twimg.com/profile_images/1975650569822846976/oFVcb5bY_400x400.jpg",
+        url: "https://solcity.ai/",
+      },
+      {
+        name: "Battle Bros",
+        logo: "https://pbs.twimg.com/profile_images/1920328990666960896/4QOnjC_I_400x400.jpg",
+        url: "https://www.battlebros.io/",
+      },
+    ],
+  },
+];
 
 const SUPPORTING_PARTNERS = [
   {
     name: "Nord VPN",
-    logo:
-      "https://pbs.twimg.com/profile_images/1618629073969750018/_J6Qi3VW_400x400.jpg",
-    url:
-      "https://go.nordvpn.net/aff_c?offer_id=15&aff_id=132230&url_id=902",
+    logo: "https://pbs.twimg.com/profile_images/1618629073969750018/_J6Qi3VW_400x400.jpg",
+    url: "https://go.nordvpn.net/aff_c?offer_id=15&aff_id=132230&url_id=902",
   },
   {
     name: "Bro Bets",
-    logo:
-      "https://pbs.twimg.com/profile_images/1851223281413607424/mOqQuuhh_400x400.jpg",
+    logo: "https://pbs.twimg.com/profile_images/1851223281413607424/mOqQuuhh_400x400.jpg",
     url: "https://brobets.io/?ref=MBusinesss",
   },
   {
     name: "GoMining",
-    logo:
-      "https://pbs.twimg.com/profile_images/1874931488254197760/nO9WZ7C7_400x400.jpg",
+    logo: "https://pbs.twimg.com/profile_images/1874931488254197760/nO9WZ7C7_400x400.jpg",
     url: "https://gomining.com/?ref=YQTPJ0D",
   },
   {
@@ -78,7 +89,7 @@ const Section = ({ eyebrow, title, children, className = "" }) => (
 );
 
 /** --------------------
- * Content blocks (copy you provided)
+ * Content blocks
  * -------------------- */
 const FEATURES = [
   {
@@ -116,19 +127,18 @@ const FEATURES = [
     body:
       "Unlock growth with our AI Agents and Discord Bots, built to help holders monetize, grow their brand, and learn smarter in Web3.",
   },
+  ...COMMUNITY_PROJECTS,
 ];
 
 /** --------------------
- * New Layout (clean, professional, structured)
+ * Layout Components
  * -------------------- */
 function Header() {
   return (
     <header className="w-full">
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center border border-white/15 backdrop-blur">
-            <span className="text-lg">🐒</span>
-          </div>
+        <div className="flex items-center gap-2">
+          <span className="text-xl">🍌</span>
           <div className="font-semibold tracking-tight">Monkey Business</div>
         </div>
         <div className="flex items-center gap-3">
@@ -162,18 +172,15 @@ function Hero() {
   return (
     <div className="w-full px-4 md:px-6 mt-4">
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-6 items-center">
-        {/* Visual card */}
         <div className="relative order-2 md:order-1">
-          <div className="relative rounded-3xl border border-white/15 bg-black/40 backdrop-blur-xl p-3 shadow-2xl">
+          <div className="relative rounded-3xl border border-white/15 bg-black/40 backdrop-blur-xl p-3 shadow-2xl overflow-hidden">
             <img
               src="https://i.ibb.co/BVs9ZV30/Banana.jpg"
               alt="Banana"
-              className="rounded-2xl w-full object-cover"
+              className="rounded-2xl w-full object-cover object-[5%_center]"
             />
           </div>
         </div>
-
-        {/* Copy + primary CTA */}
         <div className="order-1 md:order-2 text-center md:text-left">
           <div className="text-[11px] uppercase tracking-[0.25em] opacity-70 mb-2">
             Future-focused. Community-first.
@@ -182,8 +189,7 @@ function Hero() {
             Build, Play, Learn — Together
           </h1>
           <p className="mt-3 md:mt-4 opacity-85 md:text-lg max-w-xl">
-            Partnerships, raffles, education, and tech — under one brand. Mint your
-            spot and join the pack.
+            Welcome to the community of grinders, dreamers, and builders pushing Web 3 forward.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center md:justify-start gap-3">
             <a
@@ -234,54 +240,14 @@ function TrustBar() {
   );
 }
 
-function Partnerships() {
-  return (
-    <Section eyebrow="Ecosystem" title="🫱 Partnerships">
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="rounded-3xl border border-white/15 bg-black/40 backdrop-blur-xl p-6">
-          <div className="text-sm opacity-90 leading-relaxed">
-            Building strong alliances with top projects and brands like
-            <span className="font-semibold"> NordVPN</span>,
-            <span className="font-semibold"> GoMining</span>,
-            <span className="font-semibold"> TapTrade</span>, and
-            <span className="font-semibold"> BroBets</span>. Together we grow,
-            support, and share opportunities across the community.
-          </div>
-          <div className="mt-4 flex flex-wrap items-center gap-3">
-            {SUPPORTING_PARTNERS.map((p, i) => (
-              <PartnerLogo key={i} {...p} />
-            ))}
-          </div>
-        </div>
-        <a
-          href={HEADLINE_PARTNER.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-3xl border border-white/15 bg-black/40 backdrop-blur-xl p-6 flex items-center gap-4 hover:border-yellow-400/70 transition"
-        >
-          <img
-            src={HEADLINE_PARTNER.logo}
-            alt={HEADLINE_PARTNER.name}
-            className="w-14 h-14 rounded-2xl border border-white/20"
-          />
-          <div>
-            <div className="text-base font-semibold">Featured: {HEADLINE_PARTNER.name}</div>
-            <div className="text-sm opacity-80">Premium collaboration for holders</div>
-          </div>
-        </a>
-      </div>
-    </Section>
-  );
-}
-
 function Features() {
   return (
     <Section eyebrow="What you get" title="Utility that stacks">
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-10">
         {FEATURES.map((f) => (
           <div
             key={f.key}
-            className="rounded-3xl border border-white/15 bg-black/40 backdrop-blur-xl p-6 hover:border-yellow-400/70 transition"
+            className="rounded-3xl border border-white/15 bg-black/40 backdrop-blur-xl p-6 hover:border-yellow-400/70 transition text-center"
           >
             <div className="text-3xl mb-2" aria-hidden>
               {f.icon}
@@ -289,7 +255,15 @@ function Features() {
             <div className="font-semibold text-lg tracking-tight mb-1">
               {f.title}
             </div>
-            <p className="opacity-90 text-sm leading-relaxed">{f.body}</p>
+            <p className="opacity-90 text-sm leading-relaxed mb-4">{f.body}</p>
+            {f.partners && (
+              <div className="flex flex-wrap justify-center items-center gap-4">
+                {f.partners.map((p, i) => (
+                  <PartnerLogo key={i} {...p} />
+                ))}
+                <span className="opacity-80 text-sm italic">and many more...</span>
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -305,7 +279,7 @@ function CTA() {
           Ready to join the troop?
         </h3>
         <p className="opacity-85 mt-2 max-w-2xl mx-auto">
-          Mint your pass and unlock partnerships, daily drip, education, and AI tools — all in one place.
+          Mint your Monkey and unlock partnerships, daily drip, education, and AI tools — all in one place.
         </p>
         <div className="mt-5 flex items-center justify-center gap-4">
           <a
@@ -363,24 +337,17 @@ function Footer() {
   );
 }
 
-/** ---------------------------
- * Root
- * --------------------------- */
 export default function App() {
   return (
     <div
       className="min-h-screen w-full text-white relative overflow-hidden bg-cover bg-center"
       style={{ backgroundImage: "url('https://i.ibb.co/DDSMsRmK/Bananas.png')" }}
     >
-      {/* Subtle overlay for readability */}
       <div className="absolute inset-0 bg-black/70" />
-
-      {/* Page */}
       <div className="relative z-10">
         <Header />
         <Hero />
         <TrustBar />
-        <Partnerships />
         <Features />
         <CTA />
         <Footer />
@@ -388,4 +355,3 @@ export default function App() {
     </div>
   );
 }
-
