@@ -4,7 +4,7 @@ import React from "react";
 const LINKS = {
   discord: "https://t.co/pGR58q9ZCH",
   x: "https://x.com/monkeybizio",
-  mint: "https://launchmynft.io/sol/20994",
+  buy: "https://magiceden.io/marketplace/monkey_business",
 };
 
 // Community partners
@@ -157,10 +157,10 @@ function Header() {
             />
           </a>
           <a
-            href={LINKS.mint}
+            href={LINKS.buy}
             className="hidden md:inline-flex rounded-xl px-4 py-2 text-sm font-semibold bg-white text-black border border-white hover:bg-yellow-400 transition"
           >
-            Mint Now
+            Buy Now
           </a>
         </div>
       </div>
@@ -193,12 +193,12 @@ function Hero() {
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center md:justify-start gap-3">
             <a
-              href={LINKS.mint}
+              href={LINKS.buy}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center rounded-2xl px-6 py-3 text-base font-semibold transition backdrop-blur-md border bg-white text-black hover:bg-yellow-400 hover:text-black border-white shadow-lg"
             >
-              Mint Now
+              Buy Now
             </a>
             <div className="flex items-center gap-3 opacity-90">
               <a href={LINKS.discord} aria-label="Discord">
@@ -279,16 +279,16 @@ function CTA() {
           Ready to join the troop?
         </h3>
         <p className="opacity-85 mt-2 max-w-2xl mx-auto">
-          Mint your Monkey and unlock partnerships, daily drip, education, and AI tools — all in one place.
+          Buy your Monkey and unlock partnerships, daily drip, education, and AI tools — all in one place.
         </p>
         <div className="mt-5 flex items-center justify-center gap-4">
           <a
-            href={LINKS.mint}
+            href={LINKS.buy}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-2xl px-6 py-3 text-base font-semibold transition border bg-white text-black hover:bg-yellow-400 hover:text-black border-white shadow-lg"
           >
-            Mint Now
+            Buy Now
           </a>
           <div className="flex items-center gap-3 opacity-90">
             <a href={LINKS.discord} aria-label="Discord">
