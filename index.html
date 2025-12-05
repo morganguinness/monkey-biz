@@ -1,24 +1,544 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Monkey Business</title>
-    <meta name="description" content="Monkey Business — NFTs, games, and a creative studio for ambitious projects.">
-    <link rel="icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <meta property="og:title" content="Monkey Business">
-    <meta property="og:description" content="NFTs, games, and a creative studio for ambitious projects.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="/icon-512.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@monkeybizio">
-    <meta name="twitter:title" content="Monkey Business">
-    <meta name="twitter:description" content="NFTs, games, and a creative studio for ambitious projects.">
-    <meta name="twitter:image" content="/icon-512.png">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <title>MonkeyBiz | Enter the Jungle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Optional Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #050814;
+      --bg-alt: #090d1f;
+      --accent: #1ee6b9;
+      --accent-soft: rgba(30, 230, 185, 0.16);
+      --text-main: #f7f7ff;
+      --text-muted: #a3a7c3;
+      --card-radius: 22px;
+      --transition-fast: 0.22s ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #161b3d 0, #050814 55%, #000 100%);
+      color: var(--text-main);
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 20px 16px 60px;
+    }
+
+    /* Header */
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 0 26px;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-banana {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 36px;
+      width: 36px;
+      cursor: pointer;
+    }
+
+    
+
+    
+
+    
+
+    .logo-banana:hover .banana-hover {
+      display: block;
+    }
+
+    .logo-banana:hover {
+      transform: translateY(-1px) rotate(-8deg) scale(1.05);
+    }
+
+    .logo-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 20%, #fff 0, #ffd54a 20%, #f39c12 60%, #b1720c 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      box-shadow: 0 0 20px rgba(255, 221, 100, 0.35);
+    }
+
+    .logo-text-main {
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      font-size: 1.1rem;
+    }
+
+    .logo-text-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .header-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(5, 8, 20, 0.75);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(18px);
+    }
+
+    .header-pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #30fc9b;
+      box-shadow: 0 0 10px rgba(48, 252, 155, 0.8);
+    }
+
+    /* Hero text */
+
+    .hero {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(10, 16, 40, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-eyebrow-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(30, 230, 185, 0.7);
+    }
+
+    .hero-title {
+      font-size: clamp(1.9rem, 4.1vw, 2.6rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .hero-highlight {
+      background: linear-gradient(120deg, #1ee6b9, #76f7ff, #ffe66d);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      max-width: 520px;
+      margin: 0 auto;
+      color: var(--text-muted);
+    }
+
+    /* Grid */
+
+    .grid {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    @media (min-width: 640px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 960px) {
+      .grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      
+    }
+
+    /* Cards */
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--card-radius);
+      padding: 14px 14px 16px;
+      background: radial-gradient(circle at top left, rgba(30, 230, 185, 0.06), transparent 55%),
+                  radial-gradient(circle at bottom right, rgba(255, 230, 109, 0.06), transparent 55%),
+                  var(--bg-alt);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow:
+        0 18px 35px rgba(0, 0, 0, 0.75),
+        0 0 0 1px rgba(255, 255, 255, 0.02);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+      cursor: pointer;
+      isolation: isolate;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(30, 230, 185, 0.16), transparent 60%);
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .card:hover {
+      transform: translateY(-7px) scale(1.02);
+      border-color: rgba(30, 230, 185, 0.55);
+      box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.85),
+        0 0 40px rgba(30, 230, 185, 0.35);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-media {
+      border-radius: calc(var(--card-radius) - 6px);
+      overflow: hidden;
+      position: relative;
+      background: #050814;
+    }
+
+    .card-media img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      display: block;
+      transform: scale(1.02);
+      transform-origin: center;
+      transition: transform var(--transition-fast), filter var(--transition-fast);
+    }
+
+    .card:hover .card-media img {
+      transform: scale(1.06);
+      filter: saturate(1.1);
+    }
+
+    .card-media video {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card--animated .frame-static {
+      display: block !important;
+    }
+
+    .card--animated .frame-anim {
+      display: none !important;
+    }
+
+    .card--animated:hover .frame-static {
+      display: none !important;
+    }
+
+    .card--animated:hover .frame-anim {
+      display: block !important;
+    }
+
+    .card--animated:hover .frame-static {
+      display: none;
+    }
+
+    .card--animated:hover .frame-anim {
+      display: block;
+    }
+
+    .card-glow {
+      position: absolute;
+      inset: auto 18% -18%;
+      height: 40%;
+      background: radial-gradient(ellipse at center, rgba(30, 230, 185, 0.5), transparent 65%);
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+      pointer-events: none;
+    }
+
+    .card:hover .card-glow {
+      opacity: 1;
+    }
+
+    .card-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .card-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(5, 8, 20, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+    }
+
+    .card-tag-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px rgba(30, 230, 185, 0.9);
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .card-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .card-cta {
+      margin-top: 6px;
+      font-size: 0.82rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent);
+      opacity: 0.85;
+      transition: gap var(--transition-fast), opacity var(--transition-fast);
+    }
+
+    .card:hover .card-cta {
+      gap: 10px;
+      opacity: 1;
+    }
+
+    .card-cta svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    /* Footer note */
+
+    .footer-note {
+      margin-top: 30px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-wrap">
+        <div class="logo-banana" style="height:36px;width:36px;">
+          <img src="https://monkeyplanner.carrd.co/assets/images/image19.png?v=dac45dd2" style="filter:invert(1) brightness(1.4);" alt="MonkeyBiz Logo" style="width:100%;height:100%;object-fit:contain;" />
+        </div>
+        <div>
+          <div class="logo-text-main">MonkeyBiz</div>
+          <div class="logo-text-sub">NFT • Tools • Fun</div>
+        </div>
+      </div>
+
+      <div class="header-pill">
+        <span class="header-pill-dot"></span>
+        Live on-chain
+      </div>
+    </header>
+
+    <!-- Hero text -->
+    <section class="hero">
+      <div style="text-align:center; font-size:0.8rem; color:var(--text-muted); margin-bottom:6px; opacity:0.85;">Follow us</div>
+      <div class="social-links" style="margin-bottom:14px; display:flex; justify-content:center; gap:14px;">
+        <a href="https://www.twitter.com/monkeybizio" target="_blank" style="opacity:0.8; transition:0.2s; height:22px; width:22px; display:flex; align-items:center; justify-content:center;">
+  <img src="https://framerusercontent.com/images/SCdNpVxVODhpya3pbeHc7yc7g.svg?scale-down-to=1024&width=1200&height=1227" alt="X Logo" style="height:22px;width:22px;object-fit:contain;" />
+</a>
+        <a href="https://t.co/pGR58q9ZCH" target="_blank" style="opacity:0.8; transition:0.2s; height:22px; width:22px; display:flex; align-items:center; justify-content:center;">
+  <img src="https://framerusercontent.com/images/jLLzOqh7AEaRJZIlJa8xPpnsWY.svg?width=256&height=199" alt="Discord Logo" style="height:22px;width:22px;object-fit:contain;" />
+</a>
+      </div>
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-dot"></span>
+        Pick a monkey. Unlock a feature.
+      </div>
+      <h1 class="hero-title" style="transition:color 0.25s ease;" onmouseover="this.style.color='#ffe66d'" onmouseout="this.style.color=''">Monkey Business</h1>
+      <p class="hero-subtitle">Five unique one-of-one Monkeys. Five hidden gateways. Unlock AI tools, other-world utilities, staking rewards, charity missions, and on-chain loot. Your journey starts here.</p>
+    </section>
+
+    <!-- Main grid -->
+    <main class="grid">
+      <!-- Intro / Join Card -->
+      <a class="card card--animated" href="https://magiceden.io/marketplace/monkey_business">
+        <div class="card-media">
+          <img class="frame-static" src="https://pbs.twimg.com/profile_images/1971693729078554625/b26N5EIk_400x400.jpg" alt="Join Monkey Business" />
+          <img class="frame-anim" src="https://static.chainbroker.io/mediafiles/projects/magic-eden/magic-eden.png" alt="Join Monkey Business Hover" />
+          <div class="card-glow"></div>
+        </div>
+        <div class="card-content">
+          <div class="card-tag"><span class="card-tag-dot"></span> Join</div>
+          <h2 class="card-title">Join Monkey Business</h2>
+          <p class="card-desc">
+            Become part of the Monkey Business community and unlock everything the ecosystem offers.
+          </p>
+          <div class="card-cta">
+            Join the collection
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M7 17L17 7M10 7H17V14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+        </div>
+      </a>
+
+      <!-- 1. Cyber Monkey – AI Tools -->
+      <a class="card card--animated">
+        <div class="card-media">
+          <img class="frame-static" src="https://i.ibb.co/Ps35YQtG/Android.jpg" alt="Meta Monkey - Trait Lab" />
+          <video class="frame-anim" src="https://github.com/morganguinness/assets/raw/refs/heads/main/aHR0cHM6Ly9hc3NldHMueC5haS91c2Vycy80OTJjMWY5ZS02Y2ZkLTQ5ODAtYTliNC1kZTNmMzA5Y2Y2NmEvZ2VuZXJhdGVkLzQ0OWUxZWI2LTYyMWUtNDRkOS1hMDdmLTZkOGE4MzA2ZjM0Mi9nZW5lcmF0ZWRfdmlkZW8ubXA0.webm" autoplay loop muted playsinline></video>
+          <div class="card-glow"></div>
+        </div>
+        <div class="card-content">
+          <div class="card-tag"><span class="card-tag-dot"></span> Traits</div>
+          <h2 class="card-title">Meta Monkey • Trait Lab</h2>
+          <p class="card-desc">Take control of your Monkey’s traits — upgrade them, evolve them, and tap into early tools for AI-powered generative NFTs.</p>
+          <div class="card-cta">Coming Soon
+            <svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M10 7H17V14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </div>
+        </div>
+      </a>
+
+      <!-- 2. Astro Monkey – Other-World Utilities -->
+      <a class="card card--animated">
+        <div class="card-media">
+          <img class="frame-static" src="https://i.ibb.co/Nn3bCTzf/Astro.jpg" alt="Astronaut Monkey - Other-World Utilities" />
+          <video class="frame-anim" src="https://github.com/morganguinness/assets/raw/refs/heads/main/aHR0cHM6Ly9hc3NldHMueC5haS91c2Vycy80OTJjMWY5ZS02Y2ZkLTQ5ODAtYTliNC1kZTNmMzA5Y2Y2NmEvZ2VuZXJhdGVkLzAwMDRhYjgxLWIxZTAtNDkxYy1iNzljLTBiZWNiMDFhNmY1NS9nZW5lcmF0ZWRfdmlkZW8ubXA0.webm" autoplay loop muted playsinline></video>
+          <div class="card-glow"></div>
+        </div>
+        <div class="card-content">
+          <div class="card-tag"><span class="card-tag-dot"></span> Other-world utilities</div>
+          <h2 class="card-title">Astro Monkey • Other-World Utilities</h2>
+          <p class="card-desc">Access education resources, investment tools, and other-world knowledge — with income streams that flow back into the Monkeys.</p>
+          <div class="card-cta">Coming Soon
+            <svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M10 7H17V14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </div>
+        </div>
+      </a>
+
+      <!-- 3. Banana Monkey – Charity Dreamer -->
+      <a class="card card--animated">
+        <div class="card-media">
+          <img class="frame-static" src="https://i.ibb.co/xw2rtZR/Banana.jpg" alt="Banana Suit Monkey - Charity" />
+          <video class="frame-anim" src="https://github.com/morganguinness/assets/raw/refs/heads/main/aHR0cHM6Ly9hc3NldHMueC5haS91c2Vycy80OTJjMWY5ZS02Y2ZkLTQ5ODAtYTliNC1kZTNmMzA5Y2Y2NmEvZ2VuZXJhdGVkLzc5YjEyYmFlLTMyMDctNDlhNy1iNjA5LTZiZGM4NDY1YTg4Yi9nZW5lcmF0ZWRfdmlkZW8ubXA0.webm" autoplay loop muted playsinline></video>
+          <div class="card-glow"></div>
+        </div>
+        <div class="card-content">
+          <div class="card-tag"><span class="card-tag-dot"></span> Charity</div>
+          <h2 class="card-title">Banana Monkey • Charity Dreamer</h2>
+          <p class="card-desc">Support charitable causes, dream big for communities, and help drive impact-forward initiatives across the MonkeyBiz ecosystem.</p>
+          <div class="card-cta">Coming Soon
+            <svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M10 7H17V14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </div>
+        </div>
+      </a>
+
+      <!-- 4. Golden Monkey – Staking Vault -->
+      <a class="card card--animated" href="https://monkeybiz.fluxinc.io/">
+        <div class="card-media">
+          <img class="frame-static" src="https://i.ibb.co/TMmq0t4y/Golden.jpg" alt="Golden Monkey - Staking Vault" />
+          <video class="frame-anim" src="https://github.com/morganguinness/assets/raw/refs/heads/main/Grok-Video-298446C6-08E5-4897-8798-1104B67042FF.webm" autoplay loop muted playsinline></video>
+          <div class="card-glow"></div>
+        </div>
+        <div class="card-content">
+          <div class="card-tag"><span class="card-tag-dot"></span> Stake & earn</div>
+          <h2 class="card-title">Golden Monkey • Staking Vault</h2>
+          <p class="card-desc">Stake your MonkeyBiz NFTs to earn SOL — with certain traits offering secret boosts.</p>
+          <div class="card-cta">Open staking vault
+            <svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M10 7H17V14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </div>
+        </div>
+      </a>
+
+      <!-- 5. Pirate Monkey – Mystery Boxes -->
+      <a class="card card--animated" href="https://monkeyshop.fluxinc.io/shop">
+        <div class="card-media">
+          <img class="frame-static" src="https://i.ibb.co/XZZrgtb5/Pirate.jpg" alt="Pirate Monkey - Mystery Boxes" />
+          <video class="frame-anim" src="https://raw.githubusercontent.com/morganguinness/assets/main/pirate%20loot.webm" autoplay loop muted playsinline></video>
+          <div class="card-glow"></div>
+        </div>
+        <div class="card-content">
+          <div class="card-tag">
+            <span class="card-tag-dot"></span> Loot & surprises
+          </div>
+          <h2 class="card-title">Pirate Monkey • Mystery Boxes</h2>
+          <p class="card-desc">Open on-chain mystery boxes filled with NFTs, Solana, tokens, and other surprises.</p>
+          <div class="card-cta">
+            Open mystery boxes
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M7 17L17 7M10 7H17V14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+        </div>
+      </a>
+    </main>
+
+    <div class="footer-note">
+      All five Monkeys are one-of-one and act as portals into different MonkeyBiz utilities.
+    </div>
+  </div>
+</body>
 </html>
