@@ -290,6 +290,16 @@
       display: block !important;
     }
 
+    /* On touch devices (no hover), always show the animated version */
+    @media (hover: none) and (pointer: coarse) {
+      .card--animated .frame-static {
+        display: none !important;
+      }
+      .card--animated .frame-anim {
+        display: block !important;
+      }
+    }
+
     .card--animated:hover .frame-static {
       display: none;
     }
@@ -514,7 +524,7 @@
       </a>
 
       <!-- 5. Pirate Monkey – Mystery Boxes -->
-      <a class="card card--animated" href="https://monkeyshop.fluxinc.io/packs">
+      <a class="card card--animated" href="https://monkeyshop.fluxinc.io/shop">
         <div class="card-media">
           <img class="frame-static" src="https://i.ibb.co/XZZrgtb5/Pirate.jpg" alt="Pirate Monkey - Mystery Boxes" />
           <video class="frame-anim" src="https://raw.githubusercontent.com/morganguinness/assets/main/pirate%20loot.webm" autoplay loop muted playsinline></video>
